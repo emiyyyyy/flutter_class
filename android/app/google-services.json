@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "438782620395",
+    "project_id": "all-for-kids",
+    "storage_bucket": "all-for-kids.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438782620395:android:ae8244b82786ee3613c4ae",
+        "android_client_info": {
+          "package_name": "com.example.flutter_class"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438782620395-3207rfb6ba8gpesab3ebk8rbps85uc1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALKWUASzE-i-dzPvjlzcTsafwgamnoBWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438782620395-3207rfb6ba8gpesab3ebk8rbps85uc1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438782620395:android:8a119c8b4f6a65d013c4ae",
+        "android_client_info": {
+          "package_name": "test.package"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438782620395-3207rfb6ba8gpesab3ebk8rbps85uc1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALKWUASzE-i-dzPvjlzcTsafwgamnoBWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438782620395-3207rfb6ba8gpesab3ebk8rbps85uc1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
