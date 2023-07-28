@@ -9,6 +9,9 @@ class AuthenticationHelper {
   get user => _auth.currentUser;
   get uid => user.uid;
 
+
+
+
   //creates a new user with email and password
   Future signUp({required String email, required String password}) async {
     //print(uid);
