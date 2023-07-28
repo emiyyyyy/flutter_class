@@ -44,23 +44,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
-
-  static List<Widget> _bodywidgetOptions = <Widget>[
-    Classbody(),
-    Home(),
-    Home(),
-    Accountbody(),
-    RecruitPage(),
-    Settingbody(),
-  ];
+  static List<Widget> _bodywidgetOptions = [];
   late final Character character;
   _MyHomePageState(this.character){
     if (character.toString() == "Character.student") {
-
+      _bodywidgetOptions = <Widget>[
+        Classbody(),
+        Home(),
+        Home(),
+        Accountbody(),
+        RecruitPage(),
+        Settingbody(),
+      ];
     }
     else if (character.toString() == "Character.teacher") {
       titles = ["My Classes", "News", "Home", "Account", "Recruit", "Settings"];
-
+      _bodywidgetOptions = <Widget>[
+        Home(),
+        Home(),
+        Home(),
+        Accountbody(),
+        RecruitPage(),
+        Settingbody(),
+      ];
     }
     else if (character.toString() == "Character.parent") {
 
@@ -69,6 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     }
   }
+
+
 
 
 

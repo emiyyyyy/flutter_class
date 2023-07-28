@@ -12,10 +12,10 @@ class TeacherProfile extends StatefulWidget {
 
   // const MyHomePage({super.key, required this.title});
 
-  final String image;
-  TeacherProfile(this.image);
+  final Object teacher;
+  TeacherProfile(this.teacher);
   @override
-  State<TeacherProfile> createState() => TeacherProfileState(image);
+  State<TeacherProfile> createState() => TeacherProfileState(teacher);
 }
 
 class TeacherProfileState extends State<TeacherProfile> {
@@ -29,8 +29,11 @@ class TeacherProfileState extends State<TeacherProfile> {
     RecruitPage(),
     Classbody(),
   ];
-  String url = "";
-  TeacherProfileState(this.url);
+  Object teacher;
+  TeacherProfileState(this.teacher) {
+
+  }
+
 
 
 
@@ -64,7 +67,7 @@ class TeacherProfileState extends State<TeacherProfile> {
               child: Container(
                 height: 100,
                 width: 600,
-                child: Image.network(url, width: 300, height: 300,),
+                child: Image.network("https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg", width: 300, height: 300,),
                   ),
             ),
             ElevatedButton(onPressed: () {}, child: Text("Sign Up"))

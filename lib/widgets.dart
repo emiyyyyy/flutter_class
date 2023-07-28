@@ -5,7 +5,7 @@ class Classess extends StatelessWidget {
   late final String title;
   late final String teacher;
   late final String zoom;
-  late final String image;
+  late final Object image;
   List<dynamic> myJson = [];
 
   Classess(this.title, this.teacher, this.zoom, this.image);
@@ -46,7 +46,7 @@ class Classess extends StatelessWidget {
                   top: BorderSide(width: 1, color: Colors.transparent),
                 ),
 
-                borderRadius: BorderRadius.circular(5),
+                //borderRadius: BorderRadius.circular(5),
                 image: const DecorationImage(
                   fit: BoxFit.fill,
                   image: NetworkImage(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/authentication.dart';
+import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
 class Accountbody extends StatefulWidget {
@@ -73,7 +74,11 @@ class _AccountbodyState extends State<Accountbody> {
                   leading: Icon(Icons.logout),
                   title: Text('Log Out'),
                   onTap: () {
-                    // Add navigation or actions here
+                    Auth.signOut();
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Kat(),
+                        ));
                   },
                 ),
               ],
