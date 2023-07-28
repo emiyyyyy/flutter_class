@@ -4,11 +4,20 @@ import 'package:flutter_class/welcome.dart';
 import 'authentication.dart';
 import 'main.dart';
 class Login extends StatefulWidget{
+  late final Character character;
+  Login(this.character);
+
   @override
-  State<Login> createState() => _LoginState();
+  State<Login> createState() => _LoginState(character);
+
+
+
+
 }
 
 class _LoginState extends State<Login> {
+  late final Character character;
+  _LoginState(this.character);
   String email = "";
   String password = "";
   @override
@@ -80,7 +89,7 @@ class _LoginState extends State<Login> {
                       .then((result) {
                         if (result == null) {
                           Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => MyHomePage(title:'My Home Page')));
+                              MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
                         }
                         else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -130,7 +139,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(title:'My Home Page'),
+                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
                       ));
                 },
                 child: Text("Log In With Google",
@@ -162,7 +171,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(title:'My Home Page'),
+                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
                       ));
                 },
                 child: Text("Log In With Microsoft",
@@ -195,7 +204,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(title:'My Home Page'),
+                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
                       ));
                 },
                 child:
@@ -225,7 +234,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Signup(),
+                      MaterialPageRoute(builder: (context) => Signup(character),
                       ));
                 },
                 child: Text(

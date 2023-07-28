@@ -235,15 +235,16 @@ class _KatState extends State<Kat> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyHomePage(title:'My Home Page'),
+                        builder: (context) => MyHomePage(_character!, 'My Home Page'),
                       ),
                     );
                   }
                   else {
+                    print(_character.toString());
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Login(),
+                        builder: (context) => Login(_character!),
                       ),
                     );
                   }

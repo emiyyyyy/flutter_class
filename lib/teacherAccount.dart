@@ -3,79 +3,36 @@ import 'package:flutter_class/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_class/recruit.dart';
-import 'package:flutter_class/settings.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'welcome.dart';
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
+class TeacherProfile extends StatefulWidget {
+
+  // const MyHomePage({super.key, required this.title});
+
+  final Object teacher;
+  TeacherProfile(this.teacher);
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Kat(),
-    );
-  }
+  State<TeacherProfile> createState() => TeacherProfileState(teacher);
 }
 
-class MyHomePage extends StatefulWidget {
-
- // const MyHomePage({super.key, required this.title});
-
-  final String title;
-  late final Character character;
-  MyHomePage(this.character, this.title);
-  @override
-  State<MyHomePage> createState() => _MyHomePageState(character);
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class TeacherProfileState extends State<TeacherProfile> {
   List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
-  static List<Widget> _bodywidgetOptions = [];
-  late final Character character;
-  _MyHomePageState(this.character){
-    if (character.toString() == "Character.student") {
-      _bodywidgetOptions = <Widget>[
-        Classbody(),
-        Home(),
-        Home(),
-        Accountbody(),
-        RecruitPage(),
-        Settingbody(),
-      ];
-    }
-    else if (character.toString() == "Character.teacher") {
-      titles = ["My Classes", "News", "Home", "Account", "Recruit", "Settings"];
-      _bodywidgetOptions = <Widget>[
-        Home(),
-        Home(),
-        Home(),
-        Accountbody(),
-        RecruitPage(),
-        Settingbody(),
-      ];
-    }
-    else if (character.toString() == "Character.parent") {
 
-    }
-    else if (character.toString() == "Character.guest"){
+  static List<Widget> _bodywidgetOptions = <Widget>[
+    Classbody(),
+    Home(),
+    Home(),
+    Accountbody(),
+    RecruitPage(),
+    Classbody(),
+  ];
+  Object teacher;
+  TeacherProfileState(this.teacher) {
 
-    }
   }
-
 
 
 
@@ -99,11 +56,24 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 55,
         ),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+       // automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: _bodywidgetOptions[_selectedIndex],
-      ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 100,
+                width: 600,
+                child: Image.network("https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg", width: 300, height: 300,),
+                  ),
+            ),
+            ElevatedButton(onPressed: () {}, child: Text("Sign Up"))
+          ],
+        ),
+          ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
