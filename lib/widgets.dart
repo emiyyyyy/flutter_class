@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_class/studentclasspage.dart';
 import 'package:flutter_class/teacherAccount.dart';
 
 class Classess extends StatelessWidget {
@@ -24,7 +25,7 @@ class Classess extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TeacherProfile(image)));
+            MaterialPageRoute(builder: (context) => Scp()));
 
       },
       child: Container(
@@ -67,6 +68,139 @@ class Classess extends StatelessWidget {
 
                   Text(zoom),
               ],)
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Homework extends StatelessWidget {
+  late final String title;
+  late final String description;
+  late final String date;
+  List<dynamic> myJson = [];
+
+  Homework(this.title, this.description, this.date);
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'date': date,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Scp()));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle, color: Colors.red,),
+                Text(title),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 30,),
+                Column(
+                  children: [
+                    Text(date),
+                    Text(description),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ClassMaterial extends StatelessWidget {
+  late final String title;
+  late final String description;
+  late final String file;
+  List<dynamic> myJson = [];
+
+  ClassMaterial(this.title, this.description, this.file);
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'Attachment': file,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Scp()));
+
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              width: 600,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 1, color: Colors.transparent),
+                ),
+
+                //borderRadius: BorderRadius.circular(5),
+                image: const DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                      "https://marketplace.canva.com/EAETAUs3jxE/1/0/1600w/canva-chalkboard-classroom-banner-z7u1_YG6SwM.jpg"),
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(title, style: TextStyle(
+                        fontSize: 20
+                    ),),
+                    SizedBox(width: 100,),
+                    Text(description), SizedBox(width: 20,),
+
+                    Text(file),
+                  ],)
             ),
           ],
         ),
