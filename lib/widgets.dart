@@ -110,23 +110,35 @@ class Homework extends StatelessWidget {
           color: Colors.blue[100],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.red,),
-                Text(title),
+                Icon(Icons.check_circle, color: Colors.red, size: 30,),
+                SizedBox(width: 10,),
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
               ],
             ),
-            Row(
+            Divider(
+                color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(width: 30,),
-                Column(
-                  children: [
-                    Text(date),
-                    Text(description),
-                  ],
-                ),
+                Text(date,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+                Text(description,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
               ],
             ),
           ],
@@ -156,10 +168,9 @@ class ClassMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Scp()));
-
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Scp()));
       },
       child: Container(
         margin: EdgeInsets.all(10),
@@ -171,36 +182,102 @@ class ClassMaterial extends StatelessWidget {
           color: Colors.blue[100],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 100,
-              width: 600,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: 1, color: Colors.transparent),
-                ),
-
-                //borderRadius: BorderRadius.circular(5),
-                image: const DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                      "https://marketplace.canva.com/EAETAUs3jxE/1/0/1600w/canva-chalkboard-classroom-banner-z7u1_YG6SwM.jpg"),
-                ),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle, color: Colors.red, size: 30,),
+                SizedBox(width: 10,),
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
             ),
-            Container(
-                margin: EdgeInsets.all(12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(title, style: TextStyle(
-                        fontSize: 20
-                    ),),
-                    SizedBox(width: 100,),
-                    Text(description), SizedBox(width: 20,),
+            Divider(
+              color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(description,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                    Text(file),
-                  ],)
+class Anouncement extends StatelessWidget {
+  late final String title;
+  late final String description;
+  late final String date;
+  List<dynamic> myJson = [];
+
+  Anouncement(this.title, this.description, this.date);
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'date': date,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Scp()));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(date,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+                Text(description,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+              ],
             ),
           ],
         ),

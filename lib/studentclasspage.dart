@@ -20,7 +20,7 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   void _incrementCounter() {

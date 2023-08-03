@@ -21,19 +21,13 @@ class _ClassbodyState extends State<Classbody> {
   void refreshClasses() {
     db.collection("users.Students").doc(AuthenticationHelper().uid).get().then((value) {
       var x = value.data();
-      print(x);
 
     });
     db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
 
       List<Classess> tmpClasses = [];
 
-      print(querySnapshot.docs);
       for (var i in querySnapshot.docs) {
-      print(i);
-        print(i.data());
-           print(i.id);
-           print("hello");
         setState( () => tmpClasses.add(Classess(
             i.id.toString(),
             i.data()["TeacherName"].toString(),

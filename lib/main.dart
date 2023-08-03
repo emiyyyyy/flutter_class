@@ -4,6 +4,7 @@ import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_class/recruit.dart';
 import 'package:flutter_class/settings.dart';
+import 'announcements.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'welcome.dart';
@@ -45,31 +46,156 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
   static List<Widget> _bodywidgetOptions = [];
+  static List<BottomNavigationBarItem> NavbarItems = [
+    BottomNavigationBarItem(
+      icon: Icon(Icons.class_),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.article),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.face),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.travel_explore),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.settings),
+      label: "",
+      backgroundColor: Colors.blue[100],
+    ),
+  ];
   late final Character character;
   _MyHomePageState(this.character){
     if (character.toString() == "Character.student") {
+      titles = ["Classes", "Home", "Announcements", "Account", "Settings"];
       _bodywidgetOptions = <Widget>[
         Classbody(),
         Home(),
-        Home(),
+        Anounce(),
         Accountbody(),
-        RecruitPage(),
         Settingbody(),
+      ];
+      NavbarItems = [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[0],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: titles[1],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.article),
+          label: titles[2],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.face),
+          label: titles[3],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.travel_explore),
+          label: titles[4],
+          backgroundColor: Colors.blue[100],
+        ),
       ];
     }
     else if (character.toString() == "Character.teacher") {
-      titles = ["My Classes", "News", "Home", "Account", "Recruit", "Settings"];
+      titles = ["My Classes", "Home", "Announcements", "Account", "Settings"];
       _bodywidgetOptions = <Widget>[
+        Classbody(),
         Home(),
-        Home(),
-        Home(),
+        Anounce(),
         Accountbody(),
-        RecruitPage(),
         Settingbody(),
+      ];
+      NavbarItems = [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[0],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: titles[1],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.article),
+          label: titles[2],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.face),
+          label: titles[3],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.travel_explore),
+          label: titles[4],
+          backgroundColor: Colors.blue[100],
+        ),
       ];
     }
     else if (character.toString() == "Character.parent") {
-
+      titles = ["Classes", "My Classes", "Home", "Announcements", "Account", "Settings"];
+      _bodywidgetOptions = <Widget>[
+        RecruitPage(),
+        Classbody(),
+        Home(),
+        Anounce(),
+        Accountbody(),
+        Settingbody(),
+      ];
+      NavbarItems = [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[0],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[1],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: titles[2],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.article),
+          label: titles[3],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.face),
+          label: titles[4],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.travel_explore),
+          label: titles[5],
+          backgroundColor: Colors.blue[100],
+        ),
+      ];
     }
     else if (character.toString() == "Character.guest"){
 
@@ -108,38 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: true,
         backgroundColor: Colors.blue[100],
-        items:[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.class_),
-            label: titles[0],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: titles[1],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: titles[2],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.face),
-            label: titles[3],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.travel_explore),
-            label: titles[4],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: titles[5],
-            backgroundColor: Colors.blue[100],
-          ),
-        ],
+        items: NavbarItems,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
