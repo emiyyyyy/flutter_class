@@ -12,11 +12,36 @@ class Scp extends StatefulWidget {
 }
 
 class ScpState extends State<Scp> with SingleTickerProviderStateMixin{
-  List<Widget> homework = [Homework("title", "description", "date")];
-  List<Widget> classmaterials = [ClassMaterial("title", "description", "file")];
+  List<Widget> homework = [];
+  List<Widget> classmaterials = [];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   late TabController _tabController;
+  void refreshDeliverables() {
+    db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
+      List<Homework> tmpHW = [];
+      List<ClassMaterial> tmpMats = [];
+      for (var i in querySnapshot.docs) {
+        db.collection("classes").doc(i.id.toString()).collection("HW").get().then((value) {
+          for (var x in value.docs){
+            tmpHW.add(
+                Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
+            );
+          }
+        });
+
+        db.collection("classes").doc(i.id.toString()).collection("CM").get().then((value) {
+          for (var x in value.docs){
+            tmpMats.add(
+                ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"])
+            );
+          }
+        });
+      }
+      homework = tmpHW;
+      classmaterials = tmpMats;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -43,6 +68,7 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    refreshDeliverables();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue[100],

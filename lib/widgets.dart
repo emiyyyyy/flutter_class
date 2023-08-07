@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_class/studentclasspage.dart';
 import 'package:flutter_class/teacherAccount.dart';
+import 'package:flutter_class/teacherclasspage.dart';
 
 class Classess extends StatelessWidget {
   late final String title;

@@ -19,43 +19,24 @@ class _ClassbodyState extends State<Classbody> {
 
 
   void refreshClasses() {
-    db.collection("users.Students").doc(AuthenticationHelper().uid).get().then((value) {
-      var x = value.data();
-
-    });
     db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
-
       List<Classess> tmpClasses = [];
-
       for (var i in querySnapshot.docs) {
-        setState( () => tmpClasses.add(Classess(
-            i.id.toString(),
-            i.data()["TeacherName"].toString(),
-            i.data()["Zoom Link"].toString(),
-            i.data()["image"].toString()
-        )));
+        //i.id.toString() == the class id number
+        db.collection("classes").doc(i.id.toString()).get().then((value) {
+          setState( () => tmpClasses.add(Classess(
+            value.data()!["name"].toString(),
+            value.data()!["teacherName"].toString(),
+            value.data()!["zoomLink"].toString(),
+            value.data()!["image"].toString(),
+
+          )));
+        });
       }
       classes = tmpClasses;
     });
 
-
-
-    // db.collection("users").doc(AuthenticationHelper().uid).collection("classes").get().then((value) {
-    //   var i = value.data()?["classes"];
-    //   List<Classess> tmpClasses = [];
-    //   for (var entry in i.entries) {
-    //     print(entry);
-    //
-    //     setState( () => tmpClasses.add(Classess(
-    //       entry.key.toString(),
-    //       entry.value["TeacherName"].toString(),
-    //       entry.value["Zoom Link"].toString(),
-    //     )));
-    //
-    // }    classes = tmpClasses;});
-
-
-    }
+  }
 
 
 
