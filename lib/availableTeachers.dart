@@ -57,23 +57,7 @@ class availableTeachersState extends State<availableTeachers> {
   Widget build(BuildContext context) {
     refreshTeachers();
     return Scaffold(
-      body: ListView.builder(
-        itemCount: candidates.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: CircleAvatar(
-              child: Text(candidates[index][0]),
-            ),
-            title: Text(candidates[index]),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TeacherProfile(teacherImages[index]),
-                  ));
-            },
-          );
-        },
-      ),
+      
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_class/availableTeachers.dart';
 import 'package:flutter_class/studentclasspage.dart';
 import 'package:flutter_class/teacherAccount.dart';
 import 'package:flutter_class/teacherclasspage.dart';
@@ -316,43 +317,25 @@ class Course extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => Scp()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => availableTeachers(this.title)));
       },
       child: Container(
         margin: EdgeInsets.all(10),
-        height: 150,
+        height: 50,
         width: 300,
         decoration: BoxDecoration(
           border: Border.all(width: 1, color: Colors.transparent,),
           borderRadius: BorderRadius.circular(12),
           color: Colors.blue[100],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(title, style: TextStyle(
-                  fontSize: 40,
-                  fontFamily: "Metropolis",
-                ),),
-              ],
-            ),
-            Divider(
-              color: Colors.black,
-              thickness: 3,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-
-              ],
-            ),
-          ],
+        child: Center(
+          child: Text(title, style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontFamily: "Metropolis",
+          ),),
         ),
       ),
     );

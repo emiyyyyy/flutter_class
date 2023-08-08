@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/teacherAccount.dart';
+import 'package:flutter_class/widgets.dart';
 
 import 'authentication.dart';
 
@@ -14,6 +15,7 @@ class RecruitPage extends StatefulWidget {
 class _RecruitPageState extends State<RecruitPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
+  List<Widget> Courses = [Course("English")];
    List<String> candidates = [];
    List<String> teacherImages = [
      "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg",
@@ -52,9 +54,7 @@ class _RecruitPageState extends State<RecruitPage> {
     refreshCandidates();
     return Scaffold(
         body: ListView(
-          children: [
-
-          ],
+          children: Courses,
         )
     );
   }
