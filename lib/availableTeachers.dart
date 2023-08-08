@@ -37,12 +37,6 @@ class availableTeachersState extends State<availableTeachers> {
           print(value.data());
         });
       }
-
-
-
-
-
-      //teacherImages = tmpImg;
     });
   }
 

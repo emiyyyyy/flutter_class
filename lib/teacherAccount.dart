@@ -3,6 +3,7 @@ import 'package:flutter_class/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_class/recruit.dart';
+import 'authentication.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'welcome.dart';
@@ -12,20 +13,33 @@ class TeacherProfile extends StatefulWidget {
 
   // const MyHomePage({super.key, required this.title});
   late final String UID;
-  final Object teacher;
-  TeacherProfile(this.teacher);
+  TeacherProfile(this.UID);
   @override
-  State<TeacherProfile> createState() => TeacherProfileState(teacher);
+  State<TeacherProfile> createState() => TeacherProfileState(UID);
 }
 
 class TeacherProfileState extends State<TeacherProfile> {
-  List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
+  late final String name;
+  late final String imageURL;
 
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
 
-  Object teacher;
+  late final String teacher;
   TeacherProfileState(this.teacher) {
+    db.collection("users.Teachers").doc(teacher).get().then((value) {
+      print(value.data());
+      name = value.data()?["name"];
+      imageURL = value.data()?["image"];
+    });
+  }
+
+  void refreshTeachers() {
+
+
 
   }
+
 
 
 
@@ -67,47 +81,6 @@ class TeacherProfileState extends State<TeacherProfile> {
           ],
         ),
           ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showUnselectedLabels: true,
-        backgroundColor: Colors.blue[100],
-        items:[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.class_),
-            label: titles[0],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: titles[1],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: titles[2],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.face),
-            label: titles[3],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.travel_explore),
-            label: titles[4],
-            backgroundColor: Colors.blue[100],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: titles[5],
-            backgroundColor: Colors.blue[100],
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-      ),
     );
   }
 }
