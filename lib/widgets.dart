@@ -341,3 +341,46 @@ class Course extends StatelessWidget {
     );
   }
 }
+
+class Teacher extends StatelessWidget {
+  late final String UID;
+  late final String name;
+
+  List<dynamic> myJson = [];
+
+  Teacher(this.UID, this.name);
+
+  Map<String, String> toMap() {
+    return {
+      'title': UID,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TeacherProfile(this.UID)));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 50,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Center(
+          child: Text(name, style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontFamily: "Metropolis",
+          ),),
+        ),
+      ),
+    );
+  }
+}
