@@ -3,7 +3,6 @@ import 'package:flutter_class/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_class/recruit.dart';
-import 'package:flutter_class/settings.dart';
 import 'announcements.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
+  List<String> titles = ["Class", "News", "Home", "Recruit", "Settings"];
   static List<Widget> _bodywidgetOptions = [];
   static List<BottomNavigationBarItem> NavbarItems = [
     BottomNavigationBarItem(
@@ -63,11 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.blue[100],
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.face),
-      label: "",
-      backgroundColor: Colors.blue[100],
-    ),
-    BottomNavigationBarItem(
       icon: Icon(Icons.travel_explore),
       label: "",
       backgroundColor: Colors.blue[100],
@@ -82,13 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _MyHomePageState(this.character){
     if (character.toString() == "Character.student") {
-      titles = ["Classes", "Home", "Announcements", "Account", "Settings"];
+      titles = ["Classes", "Home", "News", "Settings"];
       _bodywidgetOptions = <Widget>[
         Classbody(character),
         Home(),
         Anounce(character),
         Accountbody(),
-        Settingbody(),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -107,25 +100,19 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.face),
+          icon: Icon(Icons.settings),
           label: titles[3],
-          backgroundColor: Colors.blue[100],
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.travel_explore),
-          label: titles[4],
           backgroundColor: Colors.blue[100],
         ),
       ];
     }
     else if (character.toString() == "Character.teacher") {
-      titles = ["My Classes", "Home", "Announcements", "Account", "Settings"];
+      titles = ["My Classes", "Home", "Announcements", "Settings"];
       _bodywidgetOptions = <Widget>[
         Classbody(character),
         Home(),
         Anounce(character),
         Accountbody(),
-        Settingbody(),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -144,26 +131,20 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.face),
-          label: titles[3],
-          backgroundColor: Colors.blue[100],
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.travel_explore),
-          label: titles[4],
+          label: titles[3],
           backgroundColor: Colors.blue[100],
         ),
       ];
     }
     else if (character.toString() == "Character.parent") {
-      titles = ["Classes", "My Classes", "Home", "Announcements", "Account", "Settings"];
+      titles = ["Classes", "My Classes", "Home", "Announcements", "Settings"];
       _bodywidgetOptions = <Widget>[
         RecruitPage(),
         Classbody(character),
         Home(),
         Anounce(character),
         Accountbody(),
-        Settingbody(),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -187,13 +168,8 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.face),
+          icon: Icon(Icons.settings),
           label: titles[4],
-          backgroundColor: Colors.blue[100],
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.travel_explore),
-          label: titles[5],
           backgroundColor: Colors.blue[100],
         ),
       ];
