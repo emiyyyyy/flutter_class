@@ -47,28 +47,16 @@ class _RecruitPageState extends State<RecruitPage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     refreshCandidates();
     return Scaffold(
-        body: ListView.builder(
-          itemCount: candidates.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: CircleAvatar(
-                child: Text(candidates[index][0]),
-              ),
-              title: Text(candidates[index]),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TeacherProfile(teacherImages[index]),
-                    ));
-              },
-            );
-          },
-        ),
+        body: ListView(
+          children: [
+
+          ],
+        )
     );
   }
+
 }

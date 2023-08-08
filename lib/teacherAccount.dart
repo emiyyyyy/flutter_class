@@ -11,7 +11,7 @@ import 'welcome.dart';
 class TeacherProfile extends StatefulWidget {
 
   // const MyHomePage({super.key, required this.title});
-
+  late final String UID;
   final Object teacher;
   TeacherProfile(this.teacher);
   @override
@@ -21,14 +21,7 @@ class TeacherProfile extends StatefulWidget {
 class TeacherProfileState extends State<TeacherProfile> {
   List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
 
-  static List<Widget> _bodywidgetOptions = <Widget>[
-    Classbody(),
-    Home(),
-    Home(),
-    Accountbody(),
-    RecruitPage(),
-    Classbody(),
-  ];
+
   Object teacher;
   TeacherProfileState(this.teacher) {
 
@@ -114,59 +107,6 @@ class TeacherProfileState extends State<TeacherProfile> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-class Home extends StatefulWidget {
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 600,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "Our Mission",
-            style: TextStyle(
-              fontFamily: 'Anton',
-              fontSize: 34,
-            ),
-          ),
-          Container(
-            height: 300,
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                // scrollDirection: Axis.vertical,
-                child: Text(
-                  " Our organization's goal is to share high-quality educational resources in the United States for everyone. Most of our speeches and lectures are free! Plus, we provide high quality classes at a reasonable price. Our goal is to help the children fulfill their dreams and grow their dream! We will provide high-quality information on teachers from famous schools in the United States. Parents in need can choose the courses they need for their children, including English reading, English writing, grammar, art, math, computer science, middle school and college guidance planning, counseling and other aspects of college entrance examination. Additionally, we will organize some meaningful offline activities, as well as public welfare activities for students to help each other, to jointly create an educational community environment of mutual help. Our students come from all over the world, we share educational resources and develop together!",
-                  style: TextStyle(fontFamily: 'Merriweather'),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 5,
-                )
-            ),
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Image.asset(
-              'assets/globalmap.JPG',
-              width: 300,
-            ),
-          ),
-        ],
       ),
     );
   }

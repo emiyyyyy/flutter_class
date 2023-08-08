@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/authentication.dart';
+import 'package:flutter_class/questionare.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
 class Tcp extends StatefulWidget {
 
+  late final String classID;
+  Tcp(this.classID);
   @override
-  State<Tcp> createState() => TcpState();
+  State<Tcp> createState() => TcpState(classID);
 
 }
 
@@ -17,13 +20,45 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   late TabController _tabController;
+  String classID = "";
+  TcpState(this.classID);
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  void _incrementCounter() {
+  void refreshDeliverables() {
+
+    setState(() {
+      List<Homework> tmpHW = [];
+      List<ClassMaterial> tmpMats = [];
+      db.collection("classes").doc(this.classID).collection("HW").get().then((value) {
+        for (var x in value.docs){
+          print(x.data());
+          tmpHW.add(
+              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
+          );
+        }
+      });
+
+      db.collection("classes").doc(this.classID).collection("CM").get().then((value) {
+        for (var x in value.docs){
+          tmpMats.add(
+              ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"])
+          );
+        }
+      });
+
+      homework = tmpHW;
+      classmaterials = tmpMats;
+    });
+
+
+  }
+  void addDeliverables() {
+
     setState(() {
       final Map<String, Object> newMap = {
         "TeacherName": "emily",
@@ -33,7 +68,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
         "TeacherName": "Jack Wagner",
         "Zoom Link": "1234",
       };
-      db.collection("users").doc(AuthenticationHelper().uid).collection("classes").doc("alegbra").set(classMap);
+      db.collection("classes").doc(this.classID).collection("HW").doc("alegbra").set(classMap);
 
 
 
@@ -43,6 +78,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    refreshDeliverables();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[100],
@@ -81,7 +117,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                   height: 600,
                   width: 300,
                   child: ListView(
-                    children: homework,
+                    children: classmaterials,
                   ),
                 )
               ],
@@ -103,7 +139,20 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
       ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.blue[100],
-          onPressed: _incrementCounter,
+          onPressed: () {
+            setState(() {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Questionnaire'),
+                    content: QuestionnaireForm(this.classID), // Display the form here
+                  );
+                },
+              );
+            });
+
+          },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         )

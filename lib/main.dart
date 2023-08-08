@@ -79,13 +79,14 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
   late final Character character;
+
   _MyHomePageState(this.character){
     if (character.toString() == "Character.student") {
       titles = ["Classes", "Home", "Announcements", "Account", "Settings"];
       _bodywidgetOptions = <Widget>[
-        Classbody(),
+        Classbody(character),
         Home(),
-        Anounce(),
+        Anounce(character),
         Accountbody(),
         Settingbody(),
       ];
@@ -120,9 +121,9 @@ class _MyHomePageState extends State<MyHomePage> {
     else if (character.toString() == "Character.teacher") {
       titles = ["My Classes", "Home", "Announcements", "Account", "Settings"];
       _bodywidgetOptions = <Widget>[
-        Classbody(),
+        Classbody(character),
         Home(),
-        Anounce(),
+        Anounce(character),
         Accountbody(),
         Settingbody(),
       ];
@@ -158,9 +159,9 @@ class _MyHomePageState extends State<MyHomePage> {
       titles = ["Classes", "My Classes", "Home", "Announcements", "Account", "Settings"];
       _bodywidgetOptions = <Widget>[
         RecruitPage(),
-        Classbody(),
+        Classbody(character),
         Home(),
-        Anounce(),
+        Anounce(character),
         Accountbody(),
         Settingbody(),
       ];

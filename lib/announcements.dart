@@ -5,82 +5,70 @@ import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
 class Anounce extends StatefulWidget {
-
+  late final Character character;
+  Anounce(this.character);
   @override
-  State<Anounce> createState() => AnounceState();
+  State<Anounce> createState() => AnounceState(character);
 
 }
 
 class AnounceState extends State<Anounce> {
   List<String> categories = ["Nonprofit Classes", "Art Class", "English Class", "Math Class", "Computer Science Class"];
-  List<Widget> classes = [Anouncement("title", "date", "description")];
+  List<Widget> announce = [];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
-
-
-  // void refreshClasses() {
-  //   db.collection("users.Students").doc(AuthenticationHelper().uid).get().then((value) {
-  //     var x = value.data();
-  //
-  //   });
-  //   db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
-  //
-  //     List<Classess> tmpClasses = [];
-  //
-  //     for (var i in querySnapshot.docs) {
-  //       setState( () => tmpClasses.add(Classess(
-  //           i.id.toString(),
-  //           i.data()["TeacherName"].toString(),
-  //           i.data()["Zoom Link"].toString(),
-  //           i.data()["image"].toString()
-  //       )));
-  //     }
-  //     classes = tmpClasses;
-  //   });
-  //
-  //
-  //
-  //   // db.collection("users").doc(AuthenticationHelper().uid).collection("classes").get().then((value) {
-  //   //   var i = value.data()?["classes"];
-  //   //   List<Classess> tmpClasses = [];
-  //   //   for (var entry in i.entries) {
-  //   //     print(entry);
-  //   //
-  //   //     setState( () => tmpClasses.add(Classess(
-  //   //       entry.key.toString(),
-  //   //       entry.value["TeacherName"].toString(),
-  //   //       entry.value["Zoom Link"].toString(),
-  //   //     )));
-  //   //
-  //   // }    classes = tmpClasses;});
-  //
-  //
-  // }
+  late final Character character;
+  String currentAccount = "users.Students";
 
 
 
+  AnounceState(this.character){
+    if (character.toString() == "Character.student") {
+      currentAccount = "users.Students";
+    }
+    else if (character.toString() == "Character.teacher") {
+      currentAccount = "users.Teachers";
+    }
+    else if (character.toString() == "Character.parent") {
+      currentAccount = "users.parent";
 
-  void _incrementCounter() {
-    setState(() {
-      final Map<String, Object> newMap = {
-        "TeacherName": "emily",
-        "Zoom Link": "1234",
-      };
-      final Map<String, Object> classMap = {
-        "TeacherName": "Jack Wagner",
-        "Zoom Link": "1234",
-      };
-      db.collection("users").doc(AuthenticationHelper().uid).collection("classes").doc("alegbra").set(classMap);
+    }
+    else if (character.toString() == "Character.guest"){
+      currentAccount = "users.guest";
 
+    }
+    refreshClasses();
 
-
-
-    });
   }
+
+  void refreshClasses() {
+    db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
+      List<Anouncement> tmpAnnouce = [];
+      for (var i in querySnapshot.docs) {
+        //i.id.toString() == the class id number
+        db.collection("classes").doc(i.id.toString()).collection("announce").get().then((value) {
+          for (var x in value.docs) {
+            print(x.data());
+            setState( () => tmpAnnouce.add(Anouncement(
+              x.data()!["title"],
+              x.data()!["description"],
+              x.data()!["date"],
+            )));
+          }
+
+        });
+      }
+      announce = tmpAnnouce;
+    });
+
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    // refreshClasses();
+    refreshClasses();
     return Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,17 +77,11 @@ class AnounceState extends State<Anounce> {
               height: 600,
               width: 300,
               child: ListView(
-                children: classes,
+                children: announce,
               ),
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blue[100],
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        )
     );
   }
 }

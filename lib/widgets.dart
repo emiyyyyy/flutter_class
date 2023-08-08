@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/studentclasspage.dart';
 import 'package:flutter_class/teacherAccount.dart';
 import 'package:flutter_class/teacherclasspage.dart';
+import 'package:flutter_class/welcome.dart';
 
 class Classess extends StatelessWidget {
   late final String title;
   late final String teacher;
   late final String zoom;
   late final Object image;
+  late final String classID;
+  late final Character character;
   List<dynamic> myJson = [];
 
-  Classess(this.title, this.teacher, this.zoom, this.image);
+  Classess(this.character, this.classID, this.title, this.teacher, this.zoom, this.image);
 
   Map<String, String> toMap() {
     return {
@@ -24,9 +27,18 @@ class Classess extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Scp()));
+        if (character.toString() == "Character.student") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Scp(this.classID)));
+        }
+        else if (character.toString() == "Character.teacher") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Tcp(this.classID)));
+
+        }
+
 
       },
       child: Container(
@@ -278,6 +290,66 @@ class Anouncement extends StatelessWidget {
                   fontSize: 20,
                   fontFamily: "Merriweather",
                 ),),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Course extends StatelessWidget {
+  late final String title;
+
+  List<dynamic> myJson = [];
+
+  Course(this.title);
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Scp()));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+
               ],
             ),
           ],

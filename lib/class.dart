@@ -5,9 +5,10 @@ import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
 class Classbody extends StatefulWidget {
-
+  late final Character character;
+  Classbody(this.character);
   @override
-  State<Classbody> createState() => _ClassbodyState();
+  State<Classbody> createState() => _ClassbodyState(character);
 
 }
 
@@ -16,15 +17,36 @@ class _ClassbodyState extends State<Classbody> {
   List<Widget> classes = [];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
+  String currentAccount = "users.Students";
+  late final Character character;
+
+  _ClassbodyState(this.character){
+    if (character.toString() == "Character.student") {
+      currentAccount = "users.Students";
+    }
+    else if (character.toString() == "Character.teacher") {
+      currentAccount = "users.Teachers";
+    }
+    else if (character.toString() == "Character.parent") {
+      currentAccount = "users.parent";
+
+    }
+    else if (character.toString() == "Character.guest"){
+      currentAccount = "users.guest";
+
+    }
+  }
 
 
   void refreshClasses() {
-    db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
+    db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
       List<Classess> tmpClasses = [];
       for (var i in querySnapshot.docs) {
         //i.id.toString() == the class id number
         db.collection("classes").doc(i.id.toString()).get().then((value) {
           setState( () => tmpClasses.add(Classess(
+            character,
+            i.id.toString(),
             value.data()!["name"].toString(),
             value.data()!["teacherName"].toString(),
             value.data()!["zoomLink"].toString(),

@@ -6,8 +6,11 @@ import 'package:flutter_class/widgets.dart';
 
 class Scp extends StatefulWidget {
 
+
+  late final String classID;
+  Scp(this.classID);
   @override
-  State<Scp> createState() => ScpState();
+  State<Scp> createState() => ScpState(classID);
 
 }
 
@@ -17,12 +20,15 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin{
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   late TabController _tabController;
+  String classID = "";
+  ScpState(this.classID);
+
   void refreshDeliverables() {
-    db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
-      List<Homework> tmpHW = [];
-      List<ClassMaterial> tmpMats = [];
-      for (var i in querySnapshot.docs) {
-        db.collection("classes").doc(i.id.toString()).collection("HW").get().then((value) {
+
+      setState(() {
+        List<Homework> tmpHW = [];
+        List<ClassMaterial> tmpMats = [];
+        db.collection("classes").doc(this.classID).collection("HW").get().then((value) {
           for (var x in value.docs){
             tmpHW.add(
                 Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
@@ -30,17 +36,19 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin{
           }
         });
 
-        db.collection("classes").doc(i.id.toString()).collection("CM").get().then((value) {
+        db.collection("classes").doc(this.classID).collection("CM").get().then((value) {
           for (var x in value.docs){
             tmpMats.add(
                 ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"])
             );
           }
         });
-      }
-      homework = tmpHW;
-      classmaterials = tmpMats;
-    });
+
+        homework = tmpHW;
+        classmaterials = tmpMats;
+      });
+
+
   }
   @override
   void initState() {
