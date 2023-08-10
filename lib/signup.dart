@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_class/teacherQuestionare.dart';
 import 'package:flutter_class/widgets.dart';
 
 import 'authentication.dart';
@@ -183,7 +184,7 @@ class _SignupState extends State<Signup> {
 
 
                             Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
+                                MaterialPageRoute(builder: (context) => teacherQuestion(character, AuthenticationHelper().uid, email, password)));
                           }
                           else {
                             AuthenticationHelper().currentUser.delete();

@@ -21,6 +21,7 @@ class TeacherProfile extends StatefulWidget {
 class TeacherProfileState extends State<TeacherProfile> {
   late final String name;
   late final String imageURL;
+  late final String age;
 
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
