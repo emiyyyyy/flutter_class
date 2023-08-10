@@ -9,6 +9,8 @@ class AuthenticationHelper {
   get user => _auth.currentUser;
   get uid => user.uid;
 
+  get currentUser => user;
+
 
 
 

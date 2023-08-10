@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_class/widgets.dart';
 
 import 'authentication.dart';
 import 'login.dart';
@@ -17,10 +18,31 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   @override
   late final Character character;
-  _SignupState(this.character);
+  bool thisCharacterTeacher = false;
+  String Teachercode = "OOOO";
+  String CorrectTeacherCode = "";
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+
+  _SignupState(this.character){
+    if (character.toString() == "Character.teacher") {
+      thisCharacterTeacher = true;
+    }
+
+  }
+
+  void refreshTeacherCode() {
+    db.collection("users.Teachers").doc("TeacherCode").get().then((value) {
+
+      CorrectTeacherCode = value.data()!["code"].toString();
+    }
+    );
+  }
+
   String email = "";
   String password = "";
   Widget build(BuildContext context) {
+    refreshTeacherCode();
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -78,6 +100,23 @@ class _SignupState extends State<Signup> {
                 ),
               ),
               const SizedBox(height: 20,),
+              Visibility(visible:thisCharacterTeacher,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0,),
+                    child: TextField(
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Teacher Code',
+                      ),
+                      onChanged: (String newEntry) {
+                        Teachercode = newEntry;
+                      },
+                    ),
+                  ),
+              ),
+              const SizedBox(height: 20,),
+
               SizedBox(
                 height: 50,
                 width: 500,
@@ -87,9 +126,10 @@ class _SignupState extends State<Signup> {
                         .signUp(email: email!, password: password!)
                         .then((result) {
                       if (result == null) {
-                        FirebaseFirestore db = FirebaseFirestore.instance;
                         Map<String, Object> city = new HashMap<String,Object>();
                         final Map<String, Object> newMap;
+                        print(CorrectTeacherCode);
+
                         if (character.toString() == "Character.student") {
                           newMap = {
                             "Students": {
@@ -115,26 +155,40 @@ class _SignupState extends State<Signup> {
                           };
                           db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").doc("math").set(classMap2);
 
+
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
                         }
                         else if (character.toString() == "Character.teacher") {
-                          newMap = {
-                            "Teachers": {
-                              "name" : "Jack Wagner",
-                              "email": email,
-                              "password": password,
-                              "account": AuthenticationHelper().uid,
+                          if (Teachercode == CorrectTeacherCode) {
+                            newMap = {
+                              "Teachers": {
+                                "name" : "Jack Wagner",
+                                "email": email,
+                                "password": password,
+                                "account": AuthenticationHelper().uid,
+                                "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
+
+                              },
+                            };
+
+                            db.collection("users.Teachers").doc(AuthenticationHelper().uid).set(newMap);
+                            final Map<String, Object> classMap = {
+                              "TeacherName": "Jack Wagner",
+                              "Zoom Link": "1234",
                               "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
 
-                            },
-                          };
-                          db.collection("users.Teachers").doc(AuthenticationHelper().uid).set(newMap);
-                          final Map<String, Object> classMap = {
-                            "TeacherName": "Jack Wagner",
-                            "Zoom Link": "1234",
-                            "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
+                            };
+                            db.collection("users.Teachers").doc(AuthenticationHelper().uid).collection("classes").doc("english").set(classMap);
 
-                          };
-                          db.collection("users.Teachers").doc(AuthenticationHelper().uid).collection("classes").doc("english").set(classMap);
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
+                          }
+                          else {
+                            AuthenticationHelper().currentUser.delete();
+                          }
+
 
 
                         }
@@ -148,17 +202,23 @@ class _SignupState extends State<Signup> {
                           };
                           db.collection("users.Parents").doc(AuthenticationHelper().uid).set(newMap);
 
+
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
                         }
                         else {
                           newMap = {};
+
+                          print("I'm a Guest");
                           db.collection("users").doc(AuthenticationHelper().uid).set(newMap);
+
+
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
 
                         }
 
 
-
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
                       }
                       else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
