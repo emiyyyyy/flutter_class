@@ -175,7 +175,41 @@ class _MyHomePageState extends State<MyHomePage> {
       ];
     }
     else if (character.toString() == "Character.guest"){
-
+      titles = ["Classes", "My Classes", "Home", "Announcements", "Settings"];
+      _bodywidgetOptions = <Widget>[
+        RecruitPage(),
+        Classbody(character),
+        Home(),
+        Anounce(character),
+        Accountbody(),
+      ];
+      NavbarItems = [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[0],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.class_),
+          label: titles[1],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: titles[2],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.article),
+          label: titles[3],
+          backgroundColor: Colors.blue[100],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: titles[4],
+          backgroundColor: Colors.blue[100],
+        ),
+      ];
     }
   }
 
