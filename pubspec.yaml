@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core: ^2.14.0
-  cloud_firestore: ^4.8.2
+  cloud_firestore: ^4.8.4
   firebase_auth: ^4.6.3
   youtube_player_iframe: ^4.0.4
 
@@ -68,6 +68,8 @@ flutter:
     - assets/google.png
     - assets/rawr.png
     - assets/logo.PNG
+    - assets/t&c1.png`
+    - assets/t&c2.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
