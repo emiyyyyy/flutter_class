@@ -23,35 +23,34 @@ class _RecruitPageState extends State<RecruitPage> {
      "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
    ];
 
-   void refreshCandidates() {
-     db.collection("users.Teachers").get().then((querySnapshot) {
-       List<String> tmpNames = [];
+   void refreshCourses() {
+     db.collection("Courses").get().then((querySnapshot) {
+       List<Widget> tmpCourses = [];
        List<String> tmpImg = [];
        for (var i in querySnapshot.docs) {
          //   print(i.data());
          //   print(i.id);
          //    print("hello");
          setState(() {
-           tmpNames.add(i.data()["Teachers"]["name"]);
+           tmpCourses.add(Course(i.id));
           // tmpImg.add(i.data()["Teachers"]["image"]);
          });
 
 
        }
-       candidates = tmpNames;
+       Courses = tmpCourses;
        //teacherImages = tmpImg;
      });
    }
 
   _RecruitPageState() {
-
+    refreshCourses();
 
   }
 
 
   @override
   Widget build(BuildContext context) {
-    refreshCandidates();
     return Scaffold(
         body: ListView(
           children: Courses,

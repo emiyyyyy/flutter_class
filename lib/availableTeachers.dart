@@ -26,36 +26,42 @@ class availableTeachersState extends State<availableTeachers> {
     "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
   ];
 
-  availableTeachersState(this.courseName);
+  availableTeachersState(this.courseName){
+    refreshTeachers();
+  }
 
 
   void refreshTeachers() {
+    print(courseName);
     db.collection("Courses").doc(courseName).get().then((value) {
       List<Widget> tmpTeachers = [];
-      List<String> tmpNames = [];
-      List<String> tmpImg = [];
+
       Map<String, dynamic> data = value.data() as Map<String, dynamic>;
+
       for (var i in data.keys) {
-        db.collection("users.Teachers").doc(i).get().then((value) {
-          print(value.data());
+        db.collection("users.Teachers").doc(i).get().then((x) {
+          print(x.data());
+          print(i);
+          tmpTeachers.add(Teacher(i, x.data()?["Teachers"]["name"]));
           setState(() {
-            tmpTeachers.add(Teacher(i, value.data()!["name"]));
+           // tmpTeachers.add(Teacher(i, x.data()?["name"]));
           });
         });
       }
-    });
+      teacherName = tmpTeachers;
+    }
+
+    );
+
   }
 
-  _RecruitPageState() {
 
-
-  }
 
 
 
   @override
   Widget build(BuildContext context) {
-    refreshTeachers();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[100],
