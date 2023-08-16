@@ -1,9 +1,14 @@
+
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/availableTeachers.dart';
 import 'package:flutter_class/studentclasspage.dart';
 import 'package:flutter_class/teacherAccount.dart';
 import 'package:flutter_class/teacherclasspage.dart';
 import 'package:flutter_class/welcome.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class Classess extends StatelessWidget {
   late final String title;
@@ -106,14 +111,37 @@ class Homework extends StatelessWidget {
     };
   }
 
+  File? _selectedPDF;
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      _selectedPDF = File(result.files.single.path!);
+    }
+  }
+
+  Future<void> _uploadPDF() async {
+    if (_selectedPDF != null) {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+      firebase_storage.Reference reference =
+      firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+
+      await reference.putFile(_selectedPDF!);
+      String downloadURL = await reference.getDownloadURL();
+
+      // Now you have the download URL, you can store this in your database or use it as needed.
+      print('PDF uploaded. Download URL: $downloadURL');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => Scp()));
-      },
+      onTap: () { _pickPDF(); _uploadPDF();},
       child: Container(
         margin: EdgeInsets.all(10),
         height: 150,

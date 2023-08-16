@@ -175,10 +175,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ];
     }
     else if (character.toString() == "Character.guest"){
-      titles = ["Classes", "Home", "Lectures", "Recruit", "Settings"];
+      titles = ["Classes", "Lectures", "Home", "Recruit", "Settings"];
       _bodywidgetOptions = <Widget>[
         RecruitPage(),
-        Home(),
         Classbody(character),
         Home(),
         Anounce(character),
