@@ -38,6 +38,13 @@ class TeacherProfileState extends State<TeacherProfile> {
     refreshTeachers();
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchData() async {
+    // Replace 'collectionName' with your actual collection name
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection("users.Teachers").doc(teacher).get();
+
+    return snapshot;
+  }
+
   void refreshTeachers() {
 
     db.collection("users.Teachers").doc(teacher).get().then((value) {
@@ -71,7 +78,6 @@ class TeacherProfileState extends State<TeacherProfile> {
 
   @override
   Widget build(BuildContext context) {
-    refreshTeachers();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[100],
@@ -82,26 +88,151 @@ class TeacherProfileState extends State<TeacherProfile> {
         centerTitle: true,
        // automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 100,
-                width: 600,
-                child: Image.network(imageURL, width: 300, height: 300,),
+      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future: fetchData(), // Call your fetchData function here
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator()); // Display a loading indicator while waiting for data
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error fetching data')); // Display an error message if data fetching fails
+          } else if (!snapshot.hasData) {
+            return Center(child: Text('No data available')); // Display a message if no data is available
+          } else {
+            // Build your UI using the fetched data
+            // You can access the data using snapshot.data
+            final data = snapshot.data!.data(); // Extract the data from the DocumentSnapshot
+            Map<String, dynamic> userData = data?["Teachers"];
+            // Example: Display a text widget with a value from Firestore
+          /*  return  Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(data?["Teachers"]["name"]),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 100,
+                      width: 600,
+                      child: Image.network(data?["Teachers"]["image"], width: 300, height: 300,),
+                    ),
                   ),
-            ),
-            ElevatedButton(onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Settingbody()));
+                  ElevatedButton(onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Settingbody()));
 
-            }, child: Text("Hire Me"))
-          ],
-        ),
-          ),
+                  }, child: Text("Hire Me"))
+                ],
+              ),*/
+          return  Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 16.0),
+
+                Center(
+                  child: CircleAvatar(
+                    radius: 100.0,
+                    backgroundImage: NetworkImage(userData['image']),
+                  ),
+                ),
+                SizedBox(height: 40.0),
+
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+
+                    Text(
+                      'Name: ${userData['name']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis', // Assuming you've added the Metropolis font
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Email: ${userData['email']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Age: ${userData['age']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'College: ${userData['college']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Major: ${userData['major']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Experience: ${userData['experience']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Skills: ${userData['skills']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+
+                    Text(
+                      'Current Classes: ${userData['currentClasses']}',
+                      style: TextStyle(
+                        fontFamily: 'Metropolis',
+                        fontSize: 20.0,
+                      ),
+                      maxLines: 3, // Wraps text to a maximum of 3 lines
+                      overflow: TextOverflow.ellipsis, // Shows ellipsis if the text overflows
+                    ),
+                    SizedBox(height: 40.0),
+
+                    ElevatedButton(onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Settingbody()));
+
+                    }, child: Text("Hire Me"),)
+                  ],
+                ),
+              ],
+            ),
+            );
+          }
+        },
+      ),
+
+
     );
   }
 }
