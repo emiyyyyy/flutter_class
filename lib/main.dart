@@ -175,10 +175,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ];
     }
     else if (character.toString() == "Character.guest"){
-      titles = ["Classes", "Lectures", "Home", "Recruit", "Settings"];
+      titles = ["Classes", "Home", "Recruit", "Settings"];
       _bodywidgetOptions = <Widget>[
         RecruitPage(),
-        Classbody(character),
         Home(),
         Anounce(character),
         Accountbody(),
@@ -190,23 +189,18 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.class_),
+          icon: Icon(Icons.home),
           label: titles[1],
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.article),
           label: titles[2],
           backgroundColor: Colors.blue[100],
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.article),
-          label: titles[3],
-          backgroundColor: Colors.blue[100],
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          label: titles[4],
+          label: titles[3],
           backgroundColor: Colors.blue[100],
         ),
       ];
