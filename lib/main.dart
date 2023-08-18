@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
+<<<<<<< Updated upstream
 import 'package:flutter_class/recruit.dart';
 import 'announcements.dart';
+=======
+import 'package:flutter_class/settings.dart';
+>>>>>>> Stashed changes
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'welcome.dart';
@@ -218,7 +222,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     //
   }
+<<<<<<< Updated upstream
 
+=======
+  List<String> titles = ["Class", "News", "Home", "Account", "Recruit", "Settings"];
+  static List<Widget> _bodywidgetOptions = <Widget>[
+    Classbody(),
+    Home(),
+    Home(),
+    Classbody(),
+    Classbody(),
+    Sett(),
+  ];
+>>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
