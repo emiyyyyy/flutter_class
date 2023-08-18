@@ -76,9 +76,34 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
     });
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchHW() async {
+    // Replace 'collectionName' with your actual collection name
+    DocumentSnapshot<Map<String, dynamic>> snapshot = (await db.collection(
+        "classes").doc(this.classID)
+        .collection("HW")
+        .get()) as DocumentSnapshot<Map<String, dynamic>>;
+    print(snapshot);
+    return snapshot;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchCM() async {
+    // Replace 'collectionName' with your actual collection name
+
+    DocumentSnapshot<Map<String, dynamic>> snapshot2 = db
+        .collection("classes")
+        .doc(this.classID)
+        .collection("CM")
+        .get() as DocumentSnapshot<Map<String, dynamic>>;
+
+    return snapshot2;
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    refreshDeliverables();
+   // refreshDeliverables();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[100],
@@ -88,6 +113,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
           indicatorColor: Colors.white,
           labelStyle: TextStyle(fontFamily: "Metropolis", fontSize: 17),
           tabs: [
+
             Tab(text: 'Homework'),
             Tab(text: 'Class Material',),
             Tab(text: 'Students',),
@@ -100,6 +126,40 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+            /*    FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                    future: fetchHW(), // Call your fetchData function here
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                            child:
+                            CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                      } else if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                                'Error fetching data')); // Display an error message if data fetching fails
+                      } else if (!snapshot.hasData) {
+                        return Center(
+                            child: Text(
+                                'No data available')); // Display a message if no data is available
+                      } else {
+                        // Build your UI using the fetched data
+                        // You can access the data using snapshot.data
+                        final data = snapshot.data!
+                            .data(); // Extract the data from the DocumentSnapshot
+                        print("hello");
+                        for (var x in data!.values){
+                          print(x);
+                          homework.add(
+                              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
+                          );
+                        }
+                        return Container(
+                          height: 600,
+                          width: 300,
+                          child: ListView(
+                            children: homework,
+                          ),
+                        );}}), */
                 Container(
                   height: 600,
                   width: 300,

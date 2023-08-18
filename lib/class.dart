@@ -39,24 +39,25 @@ class _ClassbodyState extends State<Classbody> {
 
 
   void refreshClasses() {
-    db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
-      List<Classess> tmpClasses = [];
-      for (var i in querySnapshot.docs) {
-        //i.id.toString() == the class id number
-        db.collection("classes").doc(i.id.toString()).get().then((value) {
-          setState( () => tmpClasses.add(Classess(
-            character,
-            i.id.toString(),
-            value.data()!["name"].toString(),
-            value.data()!["teacherName"].toString(),
-            value.data()!["zoomLink"].toString(),
-            value.data()!["image"].toString(),
-
-          )));
-        });
-      }
-      classes = tmpClasses;
-    });
+    //
+    // db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
+    //   List<Classess> tmpClasses = [];
+    //   for (var i in querySnapshot.docs) {
+    //     //i.id.toString() == the class id number
+    //     db.collection("classes").doc(i.id.toString()).get().then((value) {
+    //       setState( () => tmpClasses.add(Classess(
+    //         character,
+    //         i.id.toString(),
+    //         value.data()!["name"].toString(),
+    //         value.data()!["teacherName"].toString(),
+    //         value.data()!["zoomLink"].toString(),
+    //         value.data()!["image"].toString(),
+    //
+    //       )));
+    //     });
+    //   }
+    //   classes = tmpClasses;
+    // });
 
   }
 

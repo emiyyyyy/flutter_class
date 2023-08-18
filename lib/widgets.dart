@@ -1,4 +1,5 @@
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -126,7 +127,22 @@ class Homework extends StatelessWidget {
 
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
+      print("hello");
       String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+      print(fileName);
+
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final mountainsRef = storageRef.child(fileName);
+
+      try {
+        await mountainsRef.putFile(_selectedPDF!);
+      } catch (e) {
+        print(e);
+      }
+      String downloadURL = await mountainsRef.getDownloadURL();
+      print(downloadURL);
+/*
       firebase_storage.Reference reference =
       firebase_storage.FirebaseStorage.instance.ref().child(fileName);
 
@@ -134,7 +150,9 @@ class Homework extends StatelessWidget {
       String downloadURL = await reference.getDownloadURL();
 
       // Now you have the download URL, you can store this in your database or use it as needed.
+
       print('PDF uploaded. Download URL: $downloadURL');
+*/
     }
   }
 
