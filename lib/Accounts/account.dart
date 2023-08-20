@@ -1,0 +1,215 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_class/Accounts/authentication.dart';
+import 'package:flutter_class/welcome.dart';
+import 'package:flutter_class/widgets.dart';
+import 'changePasswords.dart';
+
+class Accountbody extends StatefulWidget {
+
+  @override
+  late final Character character;
+  Accountbody(this.character);
+  State<Accountbody> createState() => _AccountbodyState(this.character);
+}
+
+class _AccountbodyState extends State<Accountbody> {
+  List<String> categories = ["Nonprofit Classes", "Art Class", "English Class", "Math Class", "Computer Science Class"];
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
+  late final Character character;
+  String currentAccount = "users.Students";
+  String currentData = "Students";
+
+
+  _AccountbodyState(this.character){
+    if (character.toString() == "Character.student") {
+      currentAccount = "users.Students";
+      currentData = "Students";
+    }
+    else if (character.toString() == "Character.teacher") {
+      print("ello");
+      currentAccount = "users.Teachers";
+      currentData = "Teachers";
+    }
+    else if (character.toString() == "Character.parent") {
+      currentAccount = "users.parent";
+      currentData = "Parents";
+
+
+    }
+    else if (character.toString() == "Character.guest"){
+      currentAccount = "users.guest";
+
+    }
+  }
+
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchData() async {
+    // Replace 'collectionName' with your actual collection name
+    print(Auth.getUID());
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection(currentAccount).doc(Auth.getUID()).get();
+    print(snapshot.data());
+    return snapshot;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+          body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future: fetchData(), // Call your fetchData function here
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator()); // Display a loading indicator while waiting for data
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error fetching data')); // Display an error message if data fetching fails
+              } else if (!snapshot.hasData) {
+                return Center(child: Text('No data available')); // Display a message if no data is available
+              } else {
+                // Build your UI using the fetched data
+                // You can access the data using snapshot.data
+                final data = snapshot.data!.data()?[currentData]; // Extract the data from the DocumentSnapshot
+                // Example: Display a text widget with a value from Firestore
+                print(snapshot.data!.data());
+                print("hello");
+                String image = "";
+                if (data["image"] != null) {
+                  image = data["image"];
+                }
+                String name = currentData;
+                if (data["name"] != null) {
+                  name = data["name"];
+                }
+                String email = "";
+                if (data["email"] != null) {
+                  email = data["email"];
+                }
+
+
+                return Container(
+
+                  padding: EdgeInsets.all(20.0),
+                  child: ListView(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          print("upload Picture");
+                        },
+                        child: CircleAvatar(
+                          radius: 60.0,
+                          backgroundImage: NetworkImage(
+                              image
+                        ),
+                      ),
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        email,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20.0),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.lock),
+                        title: Text('Change Password'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Questionnaire'),
+                                content: changePassword(this.character), // Display the form here
+                              );
+                            },
+                          );
+                          // Add navigation or actions here
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.notifications),
+                        title: Text('Notifications'),
+                        trailing: Switch(
+                          value: false, // Replace with your own logic to handle settings
+                          onChanged: (value) {
+                            // Implement logic to update notification settings
+                          },
+                        ),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.language),
+                        title: Text('Language'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to language settings page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.security),
+                        title: Text('Security'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to security settings page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.help),
+                        title: Text('Help & Support'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to help & support page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.info),
+                        title: Text('About Us'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to about us page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.logout),
+                        title: Text('Log Out'),
+                        onTap: () {
+                          Auth.signOut();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Kat(),
+                              ));
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+          )
+
+
+        );
+  }
+}
+
+

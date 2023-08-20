@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/authentication.dart';
-import 'package:flutter_class/questionare.dart';
+import 'package:flutter_class/Accounts/authentication.dart';
+import 'package:flutter_class/Teachers/questionare.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
@@ -15,7 +15,7 @@ class Tcp extends StatefulWidget {
 }
 
 class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
-  List<Widget> homework = [Homework("title", "description", "date")];
+  List<Widget> homework = [];
   List<Widget> classmaterials = [ClassMaterial("title", "description", "file")];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
@@ -38,7 +38,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
         for (var x in value.docs){
           print(x.data());
           tmpHW.add(
-              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
+              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"],this.classID)
           );
         }
       });
@@ -103,7 +103,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-   // refreshDeliverables();
+    refreshDeliverables();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[100],

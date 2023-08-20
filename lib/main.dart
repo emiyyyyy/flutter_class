@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_class/account.dart';
+import 'package:flutter_class/Accounts/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_class/recruit.dart';
@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Classbody(character),
         Home(),
         Anounce(character),
-        Accountbody(),
+        Accountbody(character),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Classbody(character),
         Home(),
         Anounce(character),
-        Accountbody(),
+        Accountbody(character),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -144,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Classbody(character),
         Home(),
         Anounce(character),
-        Accountbody(),
+        Accountbody(character),
       ];
       NavbarItems = [
         BottomNavigationBarItem(
@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Classbody(character),
         Home(),
         Anounce(character),
-        Accountbody(),
+        Accountbody(character),
       ];
       NavbarItems = [
         BottomNavigationBarItem(

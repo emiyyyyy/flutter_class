@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/widgets.dart';
 
-import 'authentication.dart';
-import 'login.dart';
-import 'main.dart';
-import 'welcome.dart';
+import '../Accounts/authentication.dart';
+import '../Accounts/login.dart';
+import '../main.dart';
+import '../welcome.dart';
 class teacherQuestion extends StatefulWidget {
   @override
   late final Character character;

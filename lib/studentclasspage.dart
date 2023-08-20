@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/authentication.dart';
+import 'package:flutter_class/Accounts/authentication.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
@@ -35,7 +35,7 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
           .then((value) {
         for (var x in value.docs) {
           tmpHW.add(Homework(
-              x.data()!["title"], x.data()!["description"], x.data()!["date"]));
+              x.data()!["title"], x.data()!["description"], x.data()!["date"],this.classID), );
         }
       });
 

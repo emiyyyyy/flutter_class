@@ -1,15 +1,18 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/availableTeachers.dart';
 import 'package:flutter_class/studentclasspage.dart';
-import 'package:flutter_class/teacherAccount.dart';
-import 'package:flutter_class/teacherclasspage.dart';
+import 'package:flutter_class/Teachers/teacherAccount.dart';
+import 'package:flutter_class/Teachers/teacherclasspage.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'Accounts/authentication.dart';
 
 class Classess extends StatelessWidget {
   late final String title;
@@ -96,13 +99,14 @@ class Classess extends StatelessWidget {
   }
 }
 
-class Homework extends StatelessWidget {
+class TeacherHomework extends StatelessWidget {
   late final String title;
   late final String description;
   late final String date;
+  late final String classID;
   List<dynamic> myJson = [];
 
-  Homework(this.title, this.description, this.date);
+  TeacherHomework(this.title, this.description, this.date, this.classID);
 
   Map<String, String> toMap() {
     return {
@@ -113,6 +117,8 @@ class Homework extends StatelessWidget {
   }
 
   File? _selectedPDF;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
 
   Future<void> _pickPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -124,6 +130,7 @@ class Homework extends StatelessWidget {
       _selectedPDF = File(result.files.single.path!);
     }
   }
+
 
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
@@ -142,7 +149,11 @@ class Homework extends StatelessWidget {
       }
       String downloadURL = await mountainsRef.getDownloadURL();
       print(downloadURL);
-/*
+      Map<String, String> studentlink = new Map<String,String>();
+      studentlink[Auth.getUID()] = downloadURL;
+      print(studentlink);
+      db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").add(studentlink);
+      /*
       firebase_storage.Reference reference =
       firebase_storage.FirebaseStorage.instance.ref().child(fileName);
 
@@ -155,6 +166,133 @@ class Homework extends StatelessWidget {
 */
     }
   }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => availableTeachers(this.title)));
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle, color: Colors.red, size: 30,),
+                SizedBox(width: 10,),
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(date,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+                Text(description,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class Homework extends StatelessWidget {
+  late final String title;
+  late final String description;
+  late final String date;
+  late final String classID;
+  List<dynamic> myJson = [];
+
+  Homework(this.title, this.description, this.date, this.classID);
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'date': date,
+    };
+  }
+
+  File? _selectedPDF;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      _selectedPDF = File(result.files.single.path!);
+    }
+  }
+
+
+  Future<void> _uploadPDF() async {
+    if (_selectedPDF != null) {
+      print("hello");
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+      print(fileName);
+
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final mountainsRef = storageRef.child(fileName);
+
+      try {
+        await mountainsRef.putFile(_selectedPDF!);
+      } catch (e) {
+        print(e);
+      }
+      String downloadURL = await mountainsRef.getDownloadURL();
+      print(downloadURL);
+      Map<String, String> studentlink = new Map<String,String>();
+      studentlink[Auth.getUID()] = downloadURL;
+      print(studentlink);
+     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").add(studentlink);
+     /*
+      firebase_storage.Reference reference =
+      firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+
+      await reference.putFile(_selectedPDF!);
+      String downloadURL = await reference.getDownloadURL();
+
+      // Now you have the download URL, you can store this in your database or use it as needed.
+
+      print('PDF uploaded. Download URL: $downloadURL');
+*/
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

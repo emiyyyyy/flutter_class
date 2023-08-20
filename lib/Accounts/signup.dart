@@ -2,13 +2,13 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/teacherQuestionare.dart';
+import 'package:flutter_class/Teachers/teacherQuestionare.dart';
 import 'package:flutter_class/widgets.dart';
 
 import 'authentication.dart';
 import 'login.dart';
-import 'main.dart';
-import 'welcome.dart';
+import '../main.dart';
+import '../welcome.dart';
 class Signup extends StatefulWidget {
   @override
   late final Character character;

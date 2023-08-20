@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/authentication.dart';
+import 'package:flutter_class/Accounts/authentication.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 

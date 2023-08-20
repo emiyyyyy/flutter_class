@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_class/signup.dart';
+import 'package:flutter_class/Accounts/signup.dart';
 import 'package:flutter_class/welcome.dart';
 import 'authentication.dart';
-import 'main.dart';
+import '../main.dart';
 class Login extends StatefulWidget{
   late final Character character;
   Login(this.character);

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/teacherAccount.dart';
+import 'package:flutter_class/Teachers/teacherAccount.dart';
 import 'package:flutter_class/widgets.dart';
 
-import 'authentication.dart';
+import 'Accounts/authentication.dart';
 
 class availableTeachers extends StatefulWidget {
   late final String courseName;

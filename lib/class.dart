@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_class/authentication.dart';
+import 'package:flutter_class/Accounts/authentication.dart';
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 
@@ -17,8 +17,9 @@ class _ClassbodyState extends State<Classbody> {
   List<Widget> classes = [];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
-  String currentAccount = "users.Students";
   late final Character character;
+  String currentAccount = "users.Students";
+
 
   _ClassbodyState(this.character){
     if (character.toString() == "Character.student") {
@@ -39,25 +40,25 @@ class _ClassbodyState extends State<Classbody> {
 
 
   void refreshClasses() {
-    //
-    // db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
-    //   List<Classess> tmpClasses = [];
-    //   for (var i in querySnapshot.docs) {
-    //     //i.id.toString() == the class id number
-    //     db.collection("classes").doc(i.id.toString()).get().then((value) {
-    //       setState( () => tmpClasses.add(Classess(
-    //         character,
-    //         i.id.toString(),
-    //         value.data()!["name"].toString(),
-    //         value.data()!["teacherName"].toString(),
-    //         value.data()!["zoomLink"].toString(),
-    //         value.data()!["image"].toString(),
-    //
-    //       )));
-    //     });
-    //   }
-    //   classes = tmpClasses;
-    // });
+
+    db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get().then((querySnapshot) {
+      List<Classess> tmpClasses = [];
+      for (var i in querySnapshot.docs) {
+        //i.id.toString() == the class id number
+        db.collection("classes").doc(i.id.toString()).get().then((value) {
+          setState( () => tmpClasses.add(Classess(
+            character,
+            i.id.toString(),
+            value.data()!["name"].toString(),
+            value.data()!["teacherName"].toString(),
+            value.data()!["zoomLink"].toString(),
+            value.data()!["image"].toString(),
+
+          )));
+        });
+      }
+      classes = tmpClasses;
+    });
 
   }
 
