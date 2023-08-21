@@ -148,6 +148,8 @@ class TeacherHomework extends StatelessWidget {
         print(e);
       }
       String downloadURL = await mountainsRef.getDownloadURL();
+      //We would want to save this into the user account we are currently on so that we can
+      //refrence it later for the teacher to do feedback
       print(downloadURL);
       Map<String, String> studentlink = new Map<String,String>();
       studentlink[Auth.getUID()] = downloadURL;
