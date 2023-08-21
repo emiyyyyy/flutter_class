@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_class/Accounts/changePasswords.dart';
 import 'package:flutter_class/Accounts/signup.dart';
 import 'package:flutter_class/welcome.dart';
 import 'authentication.dart';
@@ -123,6 +124,22 @@ class _LoginState extends State<Login> {
               ),
             ),
             const SizedBox(height: 5,),
+            GestureDetector(
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 15,
+                  fontFamily: "Merriweather",
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => changePassword(character)));
+              },
+            ),
+            const SizedBox(height: 10,),
             Text("-or-",
               style: TextStyle(
                 fontWeight: FontWeight.w800,
@@ -158,39 +175,6 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20),
                     side: BorderSide(
                       color: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: 50,
-              width: 500,
-              child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
-                      ));
-                },
-                child: Text("Log In With Microsoft",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: "Metropolis",
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  elevation: 5.0,
-                  backgroundColor: Colors.white,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(
-                      color: Colors.grey,
-                      width: 2,
                     ),
                   ),
                 ),
