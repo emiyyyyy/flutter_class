@@ -35,13 +35,16 @@ class SubmissionState extends State<Submission> {
 
   }
 
+
+  //
+
   void refreshClasses() {
     print(title);
 
     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").get().then((value) {
       for (var x in value.docs){
         print(x);
-        Submissions.add(StudentSubmission(x.data().keys.first, x.data()?[x.data().keys.first]));
+        Submissions.add(StudentSubmission(x.id, x.data()?[x.id],title, classID));
       }
     });
 

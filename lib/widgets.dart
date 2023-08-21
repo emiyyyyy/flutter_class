@@ -177,6 +177,7 @@ class TeacherHomework extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Submission(this.classID,this.title)));
@@ -232,18 +233,73 @@ class TeacherHomework extends StatelessWidget {
 class StudentSubmission extends StatelessWidget {
   late final String uid;
   late final String link;
+  String title = "";
+  String classID = "";
   String email = "";
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   List<dynamic> myJson = [];
 
-  StudentSubmission(this.uid, this.link) {
+  StudentSubmission(this.uid, this.link, this.title, this.classID) {
     db.collection("users.Students").doc(this.uid).get().then((value) {
       email = value["email"];
     });
+
+
+  }
+
+  File? _selectedPDF;
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      _selectedPDF = File(result.files.single.path!);
+    }
   }
 
 
+  Future<void> _uploadPDF() async {
+    if (_selectedPDF != null) {
+      print("hello");
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+      print(fileName);
+
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final mountainsRef = storageRef.child(fileName);
+
+      try {
+        await mountainsRef.putFile(_selectedPDF!);
+      } catch (e) {
+        print(e);
+      }
+      String downloadURL = await mountainsRef.getDownloadURL();
+      //We would want to save this into the user account we are currently on so that we can
+      //refrence it later for the teacher to do feedback
+      print(downloadURL);
+      Map<String, String> studentlink = new Map<String,String>();
+      studentlink[Auth.getUID()] = downloadURL;
+      print(studentlink);
+      db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(this.uid).update({
+        "feedback" : downloadURL
+      });
+      /*
+      firebase_storage.Reference reference =
+      firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+
+      await reference.putFile(_selectedPDF!);
+      String downloadURL = await reference.getDownloadURL();
+
+      // Now you have the download URL, you can store this in your database or use it as needed.
+
+      print('PDF uploaded. Download URL: $downloadURL');
+*/
+    }
+  }
 
 
 
@@ -251,38 +307,48 @@ class StudentSubmission extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        final Uri url = Uri.parse(link);
-        launchUrl(url);
-      },
-      child: Container(
-        margin: EdgeInsets.all(10),
-        height: 150,
-        width: 300,
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.transparent,),
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.blue[100],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(Icons.check_circle, color: Colors.red, size: 30,),
-                SizedBox(width: 10,),
-                Text(email, style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: "Metropolis",
-                ),),
-              ],
-            ),
+    return Container(
+      margin: EdgeInsets.all(10),
+      height: 150,
+      width: 300,
+      decoration: BoxDecoration(
+        border: Border.all(width: 1, color: Colors.transparent,),
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.blue[100],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.check_circle, color: Colors.red, size: 30,),
+              SizedBox(width: 10,),
+              Text(email, style: TextStyle(
+                fontSize: 15,
+                fontFamily: "Metropolis",
+              ),),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(onPressed: () {
+                db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(this.uid).update({
+                  "submitted" : true
+                });
+                final Uri url = Uri.parse(link);
+                launchUrl(url);
+              }, child: Text("Recieve HW")),
+              SizedBox(width: 50,),
+              ElevatedButton(onPressed: () {
+                _pickPDF(); _uploadPDF();
 
-          ],
-        ),
+              }, child: Text("Upload Feedback"))
+            ],
+          )
+        ],
       ),
     );
   }
@@ -294,10 +360,18 @@ class Homework extends StatelessWidget {
   late final String title;
   late final String description;
   late final String date;
+  bool submitted = false;
   late final String classID;
   List<dynamic> myJson = [];
 
-  Homework(this.title, this.description, this.date, this.classID);
+  Homework(this.title, this.description, this.date, this.classID) {
+    db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get().then((value) {
+      if (value["submitted"]) {
+        submitted = true;
+      }
+    });
+
+  }
 
   Map<String, String> toMap() {
     return {
@@ -340,10 +414,11 @@ class Homework extends StatelessWidget {
       }
       String downloadURL = await mountainsRef.getDownloadURL();
       print(downloadURL);
-      Map<String, String> studentlink = new Map<String,String>();
+      Map<String, Object> studentlink = new Map<String,String>();
       studentlink[Auth.getUID()] = downloadURL;
+      studentlink["submission"] = false;
       print(studentlink);
-     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").add(studentlink);
+     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).set(studentlink);
      /*
       firebase_storage.Reference reference =
       firebase_storage.FirebaseStorage.instance.ref().child(fileName);
@@ -362,7 +437,21 @@ class Homework extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () { _pickPDF(); _uploadPDF();},
+      onTap: () {
+        if (submitted) {
+          db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get().then((value) {
+            final Uri url = Uri.parse(value["feedback"]);
+            launchUrl(url);
+          });
+
+
+        }
+        else {
+          _pickPDF(); _uploadPDF();
+
+        }
+
+        },
       child: Container(
         margin: EdgeInsets.all(10),
         height: 150,
@@ -378,7 +467,7 @@ class Homework extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle, color: Colors.red, size: 30,),
+                Icon(Icons.check_circle, color: submitted ? Colors.green : Colors.red, size: 30,),
                 SizedBox(width: 10,),
                 Text(title, style: TextStyle(
                   fontSize: 40,
