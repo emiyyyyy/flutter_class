@@ -57,6 +57,7 @@ class QuestionnaireForm extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             TextFormField(
+              maxLength: 80,
               onChanged: (String value) {
                 Description = value;
               },
@@ -68,6 +69,7 @@ class QuestionnaireForm extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             TextFormField(
+              maxLength: 8,
               onChanged: (String value) {
                 Date = value;
               },

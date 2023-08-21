@@ -46,7 +46,7 @@ class _ClassbodyState extends State<Classbody> {
       for (var i in querySnapshot.docs) {
         //i.id.toString() == the class id number
         db.collection("classes").doc(i.id.toString()).get().then((value) {
-          setState( () => tmpClasses.add(Classess(
+           tmpClasses.add(Classess(
             character,
             i.id.toString(),
             value.data()!["name"].toString(),
@@ -54,7 +54,7 @@ class _ClassbodyState extends State<Classbody> {
             value.data()!["zoomLink"].toString(),
             value.data()!["image"].toString(),
 
-          )));
+          ));
         });
       }
       classes = tmpClasses;

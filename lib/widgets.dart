@@ -1,8 +1,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_class/Teachers/submission.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_class/availableTeachers.dart';
 import 'package:flutter_class/studentclasspage.dart';
@@ -176,7 +179,7 @@ class TeacherHomework extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => availableTeachers(this.title)));
+            MaterialPageRoute(builder: (context) => Submission(this.classID,this.title)));
       },
       child: Container(
         margin: EdgeInsets.all(10),
@@ -225,6 +228,66 @@ class TeacherHomework extends StatelessWidget {
     );
   }
 }
+
+class StudentSubmission extends StatelessWidget {
+  late final String uid;
+  late final String link;
+  String email = "";
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
+  List<dynamic> myJson = [];
+
+  StudentSubmission(this.uid, this.link) {
+    db.collection("users.Students").doc(this.uid).get().then((value) {
+      email = value["email"];
+    });
+  }
+
+
+
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final Uri url = Uri.parse(link);
+        launchUrl(url);
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle, color: Colors.red, size: 30,),
+                SizedBox(width: 10,),
+                Text(email, style: TextStyle(
+                  fontSize: 15,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 
 class Homework extends StatelessWidget {

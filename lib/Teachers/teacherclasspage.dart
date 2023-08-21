@@ -32,13 +32,12 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
   void refreshDeliverables() {
 
     setState(() {
-      List<Homework> tmpHW = [];
+      List<TeacherHomework> tmpHW = [];
       List<ClassMaterial> tmpMats = [];
       db.collection("classes").doc(this.classID).collection("HW").get().then((value) {
         for (var x in value.docs){
-          print(x.data());
           tmpHW.add(
-              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"],this.classID)
+              TeacherHomework(x.data()!["title"], x.data()!["description"], x.data()!["date"],this.classID)
           );
         }
       });
