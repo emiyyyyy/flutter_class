@@ -31,7 +31,6 @@ class SubmissionState extends State<Submission> {
 
   SubmissionState(this.classID, this.title){
 
-    refreshClasses();
 
   }
 
@@ -39,11 +38,9 @@ class SubmissionState extends State<Submission> {
   //
 
   void refreshClasses() {
-    print(title);
 
     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").get().then((value) {
       for (var x in value.docs){
-        print(x);
         Submissions.add(StudentSubmission(x.id, x.data()?[x.id],title, classID));
       }
     });
@@ -52,6 +49,14 @@ class SubmissionState extends State<Submission> {
   }
 
 
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchSubmissions() async {
+    // Replace 'collectionName' with your actual collection name
+
+    Future<QuerySnapshot<Map<String, dynamic>>>  snapshot2 = db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").get();
+
+
+      return snapshot2;
+  }
 
 
 
@@ -64,13 +69,48 @@ class SubmissionState extends State<Submission> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            height: 600,
-            width: 300,
-            child: ListView(
-              children: Submissions,
-            ),
-          )
+          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: fetchSubmissions(), // Call your fetchData function here
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                      child:
+                      CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text(
+                          'Error fetching data')); // Display an error message if data fetching fails
+                } else if (!snapshot.hasData) {
+                  return Center(
+                      child: Text(
+                          'No data available')); // Display a message if no data is available
+                } else {
+                  // Build your UI using the fetched data
+                  // You can access the data using snapshot.data
+                  final data = snapshot.data!;
+                  // Extract the data from the DocumentSnapshot
+                  for (var x in data.docs){
+                    print(x.id);
+                    Submissions.add(StudentSubmission(x.id, x.data()?[x.id],title, classID));
+                  }
+                  return Container(
+                    height: 600,
+                    width: 300,
+                    child: ListView(
+                      children: Submissions,
+                    ),
+                  );
+                }
+              }
+              ),
+
+          // Container(
+          //   height: 600,
+          //   width: 300,
+          //   child: ListView(
+          //     children: Submissions,
+          //   ),
+          // )
         ],
       ),
     );

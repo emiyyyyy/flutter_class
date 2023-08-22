@@ -26,7 +26,7 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
   void refreshDeliverables() {
     setState(() {
       List<Homework> tmpHW = [];
-      List<ClassMaterial> tmpMats = [];
+      List<StudentClassMaterial> tmpMats = [];
       db
           .collection("classes")
           .doc(this.classID)
@@ -34,8 +34,8 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
           .get()
           .then((value) {
         for (var x in value.docs) {
-          tmpHW.add(Homework(
-              x.data()!["title"], x.data()!["description"], x.data()!["date"],this.classID), );
+          tmpHW.add(Homework(x.data()!["title"], x.data()!["description"],
+              x.data()!["date"], this.classID));
         }
       });
 
@@ -46,8 +46,8 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
           .get()
           .then((value) {
         for (var x in value.docs) {
-          tmpMats.add(ClassMaterial(
-              x.data()!["title"], x.data()!["description"], x.data()!["file"]));
+          tmpMats.add(StudentClassMaterial(x.data()!["title"],
+              x.data()!["description"], x.data()!["file"], classID));
         }
       });
 
@@ -62,10 +62,38 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchHW() async {
+    // Replace 'collectionName' with your actual collection name
+    QuerySnapshot<Map<String, dynamic>> snapshot = (await db
+        .collection("classes")
+        .doc(this.classID)
+        .collection("HW")
+        .get());
+    return snapshot;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchSubmission() async {
+    // Replace 'collectionName' with your actual collection name
+
+      DocumentSnapshot<Map<String, dynamic>> snapshot = ( await db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get());
+    return snapshot;
+  }
+
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchCM() async {
+    // Replace 'collectionName' with your actual collection name
+
+    Future<QuerySnapshot<Map<String, dynamic>>> snapshot2 =
+        db.collection("classes").doc(this.classID).collection("CM").get();
+
+    return snapshot2;
+  }
+
   Future<DocumentSnapshot<Map<String, dynamic>>> fetchData() async {
     // Replace 'collectionName' with your actual collection name
-    DocumentSnapshot<Map<String, dynamic>> snapshot = (await db.collection(
-        "classes").doc(this.classID)
+    DocumentSnapshot<Map<String, dynamic>> snapshot = (await db
+        .collection("classes")
+        .doc(this.classID)
         .collection("HW")
         .get()) as DocumentSnapshot<Map<String, dynamic>>;
     DocumentSnapshot<Map<String, dynamic>> snapshot2 = db
@@ -121,13 +149,71 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    height: 600,
-                    width: 300,
-                    child: ListView(
-                      children: homework,
-                    ),
-                  )
+                  FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      future: fetchHW(), // Call your fetchData function here
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                              child:
+                                  CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error fetching data')); // Display an error message if data fetching fails
+                        } else if (!snapshot.hasData) {
+                          return Center(
+                              child: Text(
+                                  'No data available')); // Display a message if no data is available
+                        } else {
+                          // Build your UI using the fetched data
+                          // You can access the data using snapshot.data
+                          final data = snapshot.data!;
+                          print(data.docs);
+                          // Extract the data from the DocumentSnapshot
+                          List<Homework> tmpHW = [];
+                          return FutureBuilder<
+                                  QuerySnapshot<Map<String, dynamic>>>(
+                              future: fetchHW(),
+                              // Call your fetchData function here
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                      child:
+                                          CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                      child: Text(
+                                          'Error fetching data')); // Display an error message if data fetching fails
+                                } else if (!snapshot.hasData) {
+                                  return Center(
+                                      child: Text(
+                                          'No data available')); // Display a message if no data is available
+                                } else {
+                                  // Build your UI using the fetched data
+                                  // You can access the data using snapshot.data
+                                  // Extract the data from the DocumentSnapshot
+                                  List<Homework> tmpHW = [];
+                                  for (var x in data.docs) {
+                                    print(x.data());
+                                    tmpHW.add(Homework(
+                                        x.data()!["title"],
+                                        x.data()!["description"],
+                                        x.data()!["date"],
+                                        this.classID));
+                                  }
+                                  homework = tmpHW;
+                                  return Container(
+                                      height: 600,
+                                      width: 300,
+                                      child: ListView(
+                                        children: homework,
+                                      ));
+                                }
+                              });
+                        }
+                      }),
                 ],
               ),
 
@@ -135,18 +221,51 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    height: 600,
-                    width: 300,
-                    child: ListView(
-                      children: classmaterials,
-                    ),
-                  )
+                  FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      future: fetchCM(), // Call your fetchData function here
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                              child:
+                                  CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error fetching data')); // Display an error message if data fetching fails
+                        } else if (!snapshot.hasData) {
+                          return Center(
+                              child: Text(
+                                  'No data available')); // Display a message if no data is available
+                        } else {
+                          // Build your UI using the fetched data
+                          // You can access the data using snapshot.data
+                          final data = snapshot.data!;
+                          print(data.docs);
+                          // Extract the data from the DocumentSnapshot
+                          List<StudentClassMaterial> tmpMats = [];
+
+                          for (var x in data.docs) {
+                            print(x.data());
+                            tmpMats.add(StudentClassMaterial(
+                                x.data()!["title"],
+                                x.data()!["description"],
+                                x.data()!["file"],
+                                classID));
+                          }
+                          classmaterials = tmpMats;
+                          return Container(
+                            height: 600,
+                            width: 300,
+                            child: ListView(
+                              children: classmaterials,
+                            ),
+                          );
+                        }
+                      }),
                 ],
               ),
-            ])
-
-    );
+            ]));
   }
 }
 

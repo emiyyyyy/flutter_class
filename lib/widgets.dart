@@ -137,7 +137,6 @@ class TeacherHomework extends StatelessWidget {
 
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
-      print("hello");
       String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
       print(fileName);
 
@@ -153,10 +152,8 @@ class TeacherHomework extends StatelessWidget {
       String downloadURL = await mountainsRef.getDownloadURL();
       //We would want to save this into the user account we are currently on so that we can
       //refrence it later for the teacher to do feedback
-      print(downloadURL);
       Map<String, String> studentlink = new Map<String,String>();
       studentlink[Auth.getUID()] = downloadURL;
-      print(studentlink);
       db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").add(studentlink);
       /*
       firebase_storage.Reference reference =
@@ -242,7 +239,10 @@ class StudentSubmission extends StatelessWidget {
 
   StudentSubmission(this.uid, this.link, this.title, this.classID) {
     db.collection("users.Students").doc(this.uid).get().then((value) {
-      email = value["email"];
+      if (value?["email"] != null) {
+        email = value?["email"];
+      }
+
     });
 
 
@@ -264,9 +264,7 @@ class StudentSubmission extends StatelessWidget {
 
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
-      print("hello");
       String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
-      print(fileName);
 
       final storageRef = FirebaseStorage.instance.ref();
 
@@ -280,7 +278,6 @@ class StudentSubmission extends StatelessWidget {
       String downloadURL = await mountainsRef.getDownloadURL();
       //We would want to save this into the user account we are currently on so that we can
       //refrence it later for the teacher to do feedback
-      print(downloadURL);
       Map<String, String> studentlink = new Map<String,String>();
       studentlink[Auth.getUID()] = downloadURL;
       print(studentlink);
@@ -354,8 +351,6 @@ class StudentSubmission extends StatelessWidget {
   }
 }
 
-
-
 class Homework extends StatelessWidget {
   late final String title;
   late final String description;
@@ -366,8 +361,9 @@ class Homework extends StatelessWidget {
 
   Homework(this.title, this.description, this.date, this.classID) {
     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get().then((value) {
-      if (value["submitted"]) {
+      if (value?["submitted"] != null && value?["submitted"] == true) {
         submitted = true;
+        print("file submitted");
       }
     });
 
@@ -413,23 +409,10 @@ class Homework extends StatelessWidget {
         print(e);
       }
       String downloadURL = await mountainsRef.getDownloadURL();
-      print(downloadURL);
-      Map<String, Object> studentlink = new Map<String,String>();
+      Map<String, Object> studentlink = new Map<String,Object>();
       studentlink[Auth.getUID()] = downloadURL;
       studentlink["submission"] = false;
-      print(studentlink);
      db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).set(studentlink);
-     /*
-      firebase_storage.Reference reference =
-      firebase_storage.FirebaseStorage.instance.ref().child(fileName);
-
-      await reference.putFile(_selectedPDF!);
-      String downloadURL = await reference.getDownloadURL();
-
-      // Now you have the download URL, you can store this in your database or use it as needed.
-
-      print('PDF uploaded. Download URL: $downloadURL');
-*/
     }
   }
 
@@ -504,9 +487,60 @@ class ClassMaterial extends StatelessWidget {
   late final String title;
   late final String description;
   late final String file;
+  String classID;
   List<dynamic> myJson = [];
+  bool thefile = false;
+  File? _selectedPDF;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
 
-  ClassMaterial(this.title, this.description, this.file);
+
+  ClassMaterial(this.title, this.description, this.file, this.classID) {
+    db.collection("classes").doc(this.classID).collection("CM").doc(title).get().then((value){
+      if (value?["file"] != "") {
+        thefile = true;
+      }
+    });
+  }
+
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      _selectedPDF = File(result.files.single.path!);
+    }
+  }
+
+
+  Future<void> _uploadPDF() async {
+    if (_selectedPDF != null) {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final mountainsRef = storageRef.child(fileName);
+
+      try {
+        await mountainsRef.putFile(_selectedPDF!);
+      } catch (e) {
+        print(e);
+      }
+      String downloadURL = await mountainsRef.getDownloadURL();
+      //We would want to save this into the user account we are currently on so that we can
+      //refrence it later for the teacher to do feedback
+      Map<String, String> studentlink = new Map<String,String>();
+      studentlink[Auth.getUID()] = downloadURL;
+      db.collection("classes").doc(this.classID).collection("CM").doc(title).update({
+        "file" : downloadURL
+      });
+    }
+  }
+
+
 
   Map<String, String> toMap() {
     return {
@@ -520,9 +554,134 @@ class ClassMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => Scp()));
+        _pickPDF(); _uploadPDF();
+
+      },
+      child: Container(
+        margin: EdgeInsets.all(10),
+        height: 150,
+        width: 300,
+        decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Colors.transparent,),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blue[100],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle, color: thefile ? Colors.red : Colors.green, size: 30,),
+                SizedBox(width: 10,),
+                Text(title, style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: "Metropolis",
+                ),),
+              ],
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(description,style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Merriweather",
+                ),),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StudentClassMaterial extends StatelessWidget {
+  late final String title;
+  late final String description;
+  late final String file;
+  String classID;
+  List<dynamic> myJson = [];
+
+  File? _selectedPDF;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  AuthenticationHelper Auth = AuthenticationHelper();
+
+
+  StudentClassMaterial(this.title, this.description, this.file, this.classID);
+
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      _selectedPDF = File(result.files.single.path!);
+    }
+  }
+
+
+  Future<void> _uploadPDF() async {
+    if (_selectedPDF != null) {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
+
+      final storageRef = FirebaseStorage.instance.ref();
+
+      final mountainsRef = storageRef.child(fileName);
+
+      try {
+        await mountainsRef.putFile(_selectedPDF!);
+      } catch (e) {
+        print(e);
+      }
+      String downloadURL = await mountainsRef.getDownloadURL();
+      //We would want to save this into the user account we are currently on so that we can
+      //refrence it later for the teacher to do feedback
+      Map<String, String> studentlink = new Map<String,String>();
+      studentlink[Auth.getUID()] = downloadURL;
+      db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").add(studentlink);
+      /*
+      firebase_storage.Reference reference =
+      firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+
+      await reference.putFile(_selectedPDF!);
+      String downloadURL = await reference.getDownloadURL();
+
+      // Now you have the download URL, you can store this in your database or use it as needed.
+
+      print('PDF uploaded. Download URL: $downloadURL');
+*/
+    }
+  }
+
+
+
+  Map<String, String> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'Attachment': file,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        db.collection("classes").doc(this.classID).collection("CM").doc(title).get().then((value) {
+         if (value["file"] != "") {
+           final Uri url = Uri.parse(value["file"]);
+           launchUrl(url);
+         }
+
+        });
       },
       child: Container(
         margin: EdgeInsets.all(10),
@@ -567,6 +726,9 @@ class ClassMaterial extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class Anouncement extends StatelessWidget {
   late final String title;

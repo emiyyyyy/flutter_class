@@ -16,7 +16,7 @@ class Tcp extends StatefulWidget {
 
 class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
   List<Widget> homework = [];
-  List<Widget> classmaterials = [ClassMaterial("title", "description", "file")];
+  List<Widget> classmaterials = [];
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   late TabController _tabController;
@@ -45,7 +45,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
       db.collection("classes").doc(this.classID).collection("CM").get().then((value) {
         for (var x in value.docs){
           tmpMats.add(
-              ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"])
+              ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"], classID)
           );
         }
       });
@@ -75,24 +75,23 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
     });
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> fetchHW() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchHW() async {
     // Replace 'collectionName' with your actual collection name
-    DocumentSnapshot<Map<String, dynamic>> snapshot = (await db.collection(
+    QuerySnapshot<Map<String, dynamic>> snapshot = (await db.collection(
         "classes").doc(this.classID)
         .collection("HW")
-        .get()) as DocumentSnapshot<Map<String, dynamic>>;
-    print(snapshot);
+        .get());
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> fetchCM() async {
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchCM() async {
     // Replace 'collectionName' with your actual collection name
 
-    DocumentSnapshot<Map<String, dynamic>> snapshot2 = db
+    Future<QuerySnapshot<Map<String, dynamic>>>  snapshot2 = db
         .collection("classes")
         .doc(this.classID)
         .collection("CM")
-        .get() as DocumentSnapshot<Map<String, dynamic>>;
+        .get();
 
     return snapshot2;
   }
@@ -125,7 +124,7 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-            /*    FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+               FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     future: fetchHW(), // Call your fetchData function here
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -143,42 +142,78 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                       } else {
                         // Build your UI using the fetched data
                         // You can access the data using snapshot.data
-                        final data = snapshot.data!
-                            .data(); // Extract the data from the DocumentSnapshot
-                        print("hello");
-                        for (var x in data!.values){
-                          print(x);
-                          homework.add(
-                              Homework(x.data()!["title"], x.data()!["description"], x.data()!["date"])
-                          );
-                        }
+                        final data = snapshot.data!;
+                        print(data.docs);
+                             // Extract the data from the DocumentSnapshot
+                        List<TeacherHomework> tmpHW = [];
+
+                          for (var x in data.docs) {
+                            print(x.data());
+                            tmpHW.add(
+                                TeacherHomework(x.data()!["title"],
+                                    x.data()!["description"], x.data()!["date"],
+                                    this.classID)
+                            );
+                          }
+                          homework = tmpHW;
                         return Container(
                           height: 600,
                           width: 300,
                           child: ListView(
                             children: homework,
                           ),
-                        );}}), */
-                Container(
-                  height: 600,
-                  width: 300,
-                  child: ListView(
-                    children: homework,
-                  ),
-                ),
+                        );}}),
+                // Container(
+                //   height: 600,
+                //   width: 300,
+                //   child: ListView(
+                //     children: homework,
+                //   ),
+                // ),
               ],
             ),
             // Widgets for Tab 1
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: 600,
-                  width: 300,
-                  child: ListView(
-                    children: classmaterials,
-                  ),
-                )
+                FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    future: fetchCM(), // Call your fetchData function here
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                            child:
+                            CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                      } else if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                                'Error fetching data')); // Display an error message if data fetching fails
+                      } else if (!snapshot.hasData) {
+                        return Center(
+                            child: Text(
+                                'No data available')); // Display a message if no data is available
+                      } else {
+                        // Build your UI using the fetched data
+                        // You can access the data using snapshot.data
+                        final data = snapshot.data!;
+                        print(data.docs);
+                        // Extract the data from the DocumentSnapshot
+                        List<ClassMaterial> tmpMats = [];
+
+                        for (var x in data.docs) {
+                          print(x.data());
+                          tmpMats.add(
+                              ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"], classID)
+                          );
+                        }
+                        classmaterials = tmpMats;
+                        return Container(
+                          height: 600,
+                          width: 300,
+                          child: ListView(
+                            children: classmaterials,
+                          ),
+                        );}}),
+
               ],
             ),
             // Widgets for Tab 2

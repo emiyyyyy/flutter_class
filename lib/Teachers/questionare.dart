@@ -94,8 +94,15 @@ class QuestionnaireForm extends StatelessWidget {
                     "description": Description,
                     "date": Date,
                   };
+                  final Map<String, Object> newSub = {
+                    "feedback": Title,
+                    "uid": Description,
+                    "submitted": Date,
+                  };
                   if (_selectedOptions[0] == true) {
                     db.collection("classes").doc(this.classID).collection("HW").doc(Title).set(newHW);
+                    db.collection("classes").doc(this.classID).collection("HW").doc(Title).collection("submissions").doc("Example").set(newSub);
+
                   }
                   else if (_selectedOptions[1] == true) {
                     db.collection("classes").doc(this.classID).collection("CM").doc(Title).set(newMat);

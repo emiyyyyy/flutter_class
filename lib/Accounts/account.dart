@@ -75,15 +75,15 @@ class _AccountbodyState extends State<Accountbody> {
                 print(snapshot.data!.data());
                 print("hello");
                 String image = "";
-                if (data["image"] != null) {
-                  image = data["image"];
+                if (data?["image"] != null) {
+                  image = data?["image"];
                 }
                 String name = currentData;
-                if (data["name"] != null) {
+                if (data?["name"] != null) {
                   name = data["name"];
                 }
                 String email = "";
-                if (data["email"] != null) {
+                if (data?["email"] != null) {
                   email = data["email"];
                 }
 

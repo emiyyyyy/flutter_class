@@ -36,7 +36,9 @@ class _ClassbodyState extends State<Classbody> {
       currentAccount = "users.guest";
 
     }
+    refreshClasses();
   }
+
 
 
   void refreshClasses() {
@@ -62,6 +64,22 @@ class _ClassbodyState extends State<Classbody> {
 
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchClass() async {
+
+
+
+      QuerySnapshot<Map<String, dynamic>> snapshot = (await db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get());
+
+    return snapshot;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchClasses() async {
+    // Replace 'collectionName' with your actual collection name
+    QuerySnapshot<Map<String, dynamic>> snapshot = (await db.collection(currentAccount).doc(AuthenticationHelper().uid).collection("classes").get());
+
+    return snapshot;
+  }
+
 
 
 
@@ -85,18 +103,61 @@ class _ClassbodyState extends State<Classbody> {
 
   @override
   Widget build(BuildContext context) {
-    refreshClasses();
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            height: 600,
-            width: 300,
-            child: ListView(
-            children: classes,
-           ),
-          )
+          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: fetchClasses(), // Call your fetchData function here
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                      child:
+                      CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                } else if (snapshot.hasError) {
+                  return Center(
+                      child: Text(
+                          'Error fetching data')); // Display an error message if data fetching fails
+                } else if (!snapshot.hasData) {
+                  return Center(
+                      child: Text(
+                          'No data available')); // Display a message if no data is available
+                } else {
+                  // Build your UI using the fetched data
+                  // You can access the data using snapshot.data
+                  final data = snapshot.data!;
+                  return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      future: fetchClass(), // Call your fetchData function here
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(
+                              child:
+                              CircularProgressIndicator()); // Display a loading indicator while waiting for data
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text(
+                                  'Error fetching data')); // Display an error message if data fetching fails
+                        } else if (!snapshot.hasData) {
+                          return Center(
+                              child: Text(
+                                  'No data available')); // Display a message if no data is available
+                        } else {
+                          // Build your UI using the fetched data
+                          // You can access the data using snapshot.data
+                          final data = snapshot.data!;
+                          List<Classess> tmpClasses = [];
+                          refreshClasses();
+
+                          // Extract the data from the DocumentSnapshot
+                          return Container(
+                            height: 600,
+                            width: 300,
+                            child: ListView(
+                              children: classes,
+                            ),
+                          );
+                        }
+    });}}),
         ],
       ),
       floatingActionButton: FloatingActionButton(
