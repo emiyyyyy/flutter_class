@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_class/Accounts/changePasswords.dart';
 import 'package:flutter_class/Accounts/signup.dart';
+import 'package:flutter_class/services/auth_service.dart';
 import 'package:flutter_class/welcome.dart';
 import 'authentication.dart';
 import '../main.dart';
@@ -124,22 +125,6 @@ class _LoginState extends State<Login> {
               ),
             ),
             const SizedBox(height: 5,),
-            GestureDetector(
-              child: Text(
-                "Forgot Password?",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 15,
-                  fontFamily: "Merriweather",
-                ),
-              ),
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => changePassword(character)));
-              },
-            ),
-            const SizedBox(height: 10,),
             Text("-or-",
               style: TextStyle(
                 fontWeight: FontWeight.w800,
@@ -156,7 +141,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
+                      MaterialPageRoute(builder: (context) => AuthService().signInWithGoogle(),
                       ));
                 },
                 child: Text("Log In With Google",

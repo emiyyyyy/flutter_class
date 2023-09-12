@@ -303,39 +303,6 @@ class _SignupState extends State<Signup> {
                         MaterialPageRoute(builder: (context) => Login(character),
                         ));
                   },
-                  child: Text("Continue With Microsoft",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: "Metropolis",
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    elevation: 5.0,
-                    backgroundColor: Colors.white,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(
-                        color: Colors.grey,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10,),
-              SizedBox(
-                height: 50,
-                width: 500,
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login(character),
-                        ));
-                  },
                   child:
                       Text("Continue With Apple",
                         style: TextStyle(

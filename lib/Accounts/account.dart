@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_class/Accounts/authentication.dart';
+import 'package:flutter_class/Accounts/changePasswords.dart' as ChangePasswords;
 import 'package:flutter_class/welcome.dart';
 import 'package:flutter_class/widgets.dart';
 import 'changePasswords.dart';
@@ -134,11 +135,11 @@ class _AccountbodyState extends State<Accountbody> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text('Questionnaire'),
-                                content: changePassword(this.character), // Display the form here
+                                content: changePassword(this.character, context), // Display the form here
                               );
                             },
                           );
-                          // Add navigation or actions here
+
                         },
                       ),
                       Divider(),

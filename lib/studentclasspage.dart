@@ -72,12 +72,12 @@ class ScpState extends State<Scp> with SingleTickerProviderStateMixin {
     return snapshot;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> fetchSubmission() async {
-    // Replace 'collectionName' with your actual collection name
-
-      DocumentSnapshot<Map<String, dynamic>> snapshot = ( await db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get());
-    return snapshot;
-  }
+  // Future<DocumentSnapshot<Map<String, dynamic>>> fetchSubmission() async {
+  //   // Replace 'collectionName' with your actual collection name
+  //
+  //     DocumentSnapshot<Map<String, dynamic>> snapshot = ( await db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get());
+  //   return snapshot;
+  // }
 
 
   Future<QuerySnapshot<Map<String, dynamic>>> fetchCM() async {
