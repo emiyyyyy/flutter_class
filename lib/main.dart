@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/Accounts/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_class/recruit.dart';
+import 'package:flutter_class/lectures.dart';
 import 'announcements.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'guessClasses.dart';
+import 'guestrecruit.dart';
 import 'welcome.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -140,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
     else if (character.toString() == "Character.parent") {
       titles = ["Classes", "My Classes", "Home", "Announcements", "Settings"];
       _bodywidgetOptions = <Widget>[
-        RecruitPage(),
+        GuestClasses(),
         Classbody(character),
         Home(),
         Anounce(character),
@@ -177,10 +179,10 @@ class _MyHomePageState extends State<MyHomePage> {
     else if (character.toString() == "Character.guest"){
       titles = ["Classes", "Lectures", "Home", "Recruit", "Settings"];
       _bodywidgetOptions = <Widget>[
-        RecruitPage(),
-        Classbody(character),
+        GuestClasses(),
+        Lectures(),
         Home(),
-        Anounce(character),
+        RecruitPage(),
         Accountbody(character),
       ];
       NavbarItems = [

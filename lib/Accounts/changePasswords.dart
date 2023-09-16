@@ -90,7 +90,7 @@ class changePassword extends StatelessWidget {
                   //CHECK FOR PASSWORDS BEING THE SAME
                   //use video
                   //https://www.youtube.com/watch?v=JkQJQt_pQho&embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F&source_ve_path=MjM4NTE&feature=emb_title
-
+                  resetPassword();
                 },
                 child: Text('Reset Password Via Email'),
               ),
@@ -120,6 +120,7 @@ class changePassword extends StatelessWidget {
       Navigator.of(context).popUntil((route) => route.isFirst);
     }on FirebaseAuthException catch(e){
       print(e);
+      print("LAWL didn't work");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
           e.message!,

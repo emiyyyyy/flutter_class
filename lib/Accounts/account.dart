@@ -41,7 +41,8 @@ class _AccountbodyState extends State<Accountbody> {
 
     }
     else if (character.toString() == "Character.guest"){
-      currentAccount = "users.guest";
+      currentAccount = "users.Students";
+      currentData = "Students";
 
     }
   }
@@ -65,7 +66,118 @@ class _AccountbodyState extends State<Accountbody> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator()); // Display a loading indicator while waiting for data
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error fetching data')); // Display an error message if data fetching fails
+                return Container(
+
+                  padding: EdgeInsets.all(20.0),
+                  child: ListView(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          print("upload Picture");
+                        },
+                        child: CircleAvatar(
+                          radius: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      Text(
+                        "Guest",
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        "example@gmail.com",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20.0),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.lock),
+                        title: Text('Change Password'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Questionnaire'),
+                                content: changePassword(this.character, context), // Display the form here
+                              );
+                            },
+                          );
+
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.notifications),
+                        title: Text('Notifications'),
+                        trailing: Switch(
+                          value: false, // Replace with your own logic to handle settings
+                          onChanged: (value) {
+                            // Implement logic to update notification settings
+                          },
+                        ),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.language),
+                        title: Text('Language'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to language settings page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.security),
+                        title: Text('Security'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to security settings page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.help),
+                        title: Text('Help & Support'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to help & support page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.info),
+                        title: Text('About Us'),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Implement navigation to about us page
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.logout),
+                        title: Text('Log Out'),
+                        onTap: () {
+                          Auth.signOut();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Kat(),
+                              ));
+                        },
+                      ),
+                    ],
+                  ),
+                ); // Display an error message if data fetching fails
               } else if (!snapshot.hasData) {
                 return Center(child: Text('No data available')); // Display a message if no data is available
               } else {

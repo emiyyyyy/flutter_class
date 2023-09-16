@@ -5,14 +5,14 @@ import 'package:flutter_class/widgets.dart';
 
 import 'Accounts/authentication.dart';
 
-class RecruitPage extends StatefulWidget {
+class GuestClasses extends StatefulWidget {
 
   @override
-  State<RecruitPage> createState() => _RecruitPageState();
+  State<GuestClasses> createState() => GuestClassesState();
 }
 
 
-class _RecruitPageState extends State<RecruitPage> {
+class GuestClassesState extends State<GuestClasses> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   AuthenticationHelper Auth = AuthenticationHelper();
   List<Widget> Courses = [Course("English")];
