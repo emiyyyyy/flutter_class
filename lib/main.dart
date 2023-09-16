@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/Accounts/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:flutter_class/guessClasses.dart';
->>>>>>> Stashed changes
 import 'package:flutter_class/lectures.dart';
 import 'announcements.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-<<<<<<< Updated upstream
 import 'guessClasses.dart';
-=======
->>>>>>> Stashed changes
 import 'guestrecruit.dart';
 import 'welcome.dart';
 void main() async {
