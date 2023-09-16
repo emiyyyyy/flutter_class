@@ -43,7 +43,10 @@ class _AccountbodyState extends State<Accountbody> {
     else if (character.toString() == "Character.guest"){
       currentAccount = "users.Students";
       currentData = "Students";
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
   }
 
@@ -198,6 +201,9 @@ class _AccountbodyState extends State<Accountbody> {
                 String email = "";
                 if (data?["email"] != null) {
                   email = data["email"];
+                }
+                if (character.toString() == "Character.guest") {
+                  name = "Guest";
                 }
 
 

@@ -141,8 +141,7 @@ class _LoginState extends State<Login> {
                 onPressed: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AuthService().signInWithGoogle(),
-                      ));
+                      MaterialPageRoute(builder: (context) => AuthService().signInWithGoogle()));
                 },
                 child: Text("Log In With Google",
                   style: TextStyle(
@@ -160,39 +159,6 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20),
                     side: BorderSide(
                       color: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: 50,
-              width: 500,
-              child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page'),
-                      ));
-                },
-                child:
-                    Text("Log In With Apple",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: "Metropolis",
-                      ),
-                    ),
-                style: ElevatedButton.styleFrom(
-                  elevation: 5.0,
-                  backgroundColor: Colors.black,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(
-                      color: Colors.black,
                     ),
                   ),
                 ),

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/Accounts/account.dart';
 import 'package:flutter_class/class.dart';
 import 'package:firebase_core/firebase_core.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:flutter_class/guessClasses.dart';
+>>>>>>> Stashed changes
 import '../Accounts/authentication.dart';
 import '../buyclass.dart';
 import '../firebase_options.dart';

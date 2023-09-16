@@ -87,6 +87,7 @@ class changePassword extends StatelessWidget {
                   minimumSize: Size.fromHeight(50),
                 ),
                 onPressed: () {
+                  resetPassword();
                   //CHECK FOR PASSWORDS BEING THE SAME
                   //use video
                   //https://www.youtube.com/watch?v=JkQJQt_pQho&embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F&source_ve_path=MjM4NTE&feature=emb_title
@@ -127,6 +128,7 @@ class changePassword extends StatelessWidget {
           style: TextStyle(fontSize: 16),
         ),
       ));
+      Navigator.of(context).pop();
     }
   }
 }

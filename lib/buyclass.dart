@@ -22,14 +22,14 @@ class _SettingbodyState extends State<Settingbody> {
         padding: EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            Image.asset("t&c1.png"),
-            Image.asset("t&c2.jpeg"),
+            Image.asset("assets/t&c1.png"),
+            Image.asset("assets/t&c2.jpeg"),
             SizedBox(height: 20,),
             Text("Contact me to purchase classes and for more information on the prices, after you have bought the classes please make a parent account",
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10,),
-            Image.asset("t&c2.jpeg"),
+            Image.asset("assets/wechatqr.png"),
           ],
         ),
       ),
