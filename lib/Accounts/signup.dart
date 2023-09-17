@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_class/Teachers/teacherQuestionare.dart';
 import 'package:flutter_class/widgets.dart';
 
+import '../services/auth_service.dart';
 import 'authentication.dart';
 import 'login.dart';
 import '../main.dart';
@@ -266,9 +267,7 @@ class _SignupState extends State<Signup> {
                 width: 500,
                 child: ElevatedButton(
                   onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
+                    AuthService().signInWithGoogle();
                   },
                   child: Text("Continue With Google",
                     style: TextStyle(

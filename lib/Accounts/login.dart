@@ -22,6 +22,9 @@ class _LoginState extends State<Login> {
   _LoginState(this.character);
   String email = "";
   String password = "";
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,9 +142,7 @@ class _LoginState extends State<Login> {
               width: 500,
               child: ElevatedButton(
                 onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AuthService().signInWithGoogle()));
+                  AuthService().signInWithGoogle();
                 },
                 child: Text("Log In With Google",
                   style: TextStyle(
