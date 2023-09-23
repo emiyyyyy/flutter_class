@@ -5,6 +5,8 @@ import 'package:flutter_class/services/auth_service.dart';
 import 'package:flutter_class/welcome.dart';
 import 'authentication.dart';
 import '../main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 class Login extends StatefulWidget{
   late final Character character;
   Login(this.character);
@@ -22,6 +24,8 @@ class _LoginState extends State<Login> {
   _LoginState(this.character);
   String email = "";
   String password = "";
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
 
 
@@ -141,8 +145,8 @@ class _LoginState extends State<Login> {
               height: 50,
               width: 500,
               child: ElevatedButton(
-                onPressed: (){
-                  AuthService().signInWithGoogle();
+                onPressed: () {
+                  AuthenticationHelper().Googlesignup(character, context);
                 },
                 child: Text("Log In With Google",
                   style: TextStyle(

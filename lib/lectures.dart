@@ -14,7 +14,7 @@ class Lectures extends StatefulWidget {
 
 
 class LecturesState extends State<Lectures> {
-  final videoUrl = "https://www.youtube.com/watch?v=Jkto1xUra4w";
+  final videoUrl = "https://www.youtube.com/watch?v=jzh3DfUtRhE";
 
   late YoutubePlayerController _controller;
   bool _isPlayerReady = false;

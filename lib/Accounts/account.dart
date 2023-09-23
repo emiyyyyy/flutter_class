@@ -35,7 +35,7 @@ class _AccountbodyState extends State<Accountbody> {
       currentData = "Teachers";
     }
     else if (character.toString() == "Character.parent") {
-      currentAccount = "users.parent";
+      currentAccount = "users.Parents";
       currentData = "Parents";
 
 
@@ -50,6 +50,7 @@ class _AccountbodyState extends State<Accountbody> {
   Future<DocumentSnapshot<Map<String, dynamic>>> fetchData() async {
     // Replace 'collectionName' with your actual collection name
     print(Auth.getUID());
+    print(currentAccount);
     DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection(currentAccount).doc(Auth.getUID()).get();
     print(snapshot.data());
     return snapshot;
@@ -65,6 +66,7 @@ class _AccountbodyState extends State<Accountbody> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator()); // Display a loading indicator while waiting for data
               } else if (snapshot.hasError) {
+
                 return Container(
 
                   padding: EdgeInsets.all(20.0),
@@ -96,6 +98,8 @@ class _AccountbodyState extends State<Accountbody> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 10.0),
+
                       SizedBox(height: 20.0),
                       Divider(),
                       ListTile(
@@ -184,7 +188,7 @@ class _AccountbodyState extends State<Accountbody> {
                 // You can access the data using snapshot.data
                 final data = snapshot.data!.data()?[currentData]; // Extract the data from the DocumentSnapshot
                 // Example: Display a text widget with a value from Firestore
-                print(snapshot.data!.data());
+                print(snapshot.data!.data()?[currentData]);
                 print("hello");
                 String image = "";
                 if (data?["image"] != null) {
@@ -201,6 +205,14 @@ class _AccountbodyState extends State<Accountbody> {
                 if (character.toString() == "Character.guest") {
                   name = "Guest";
                 }
+                String code = "1234";
+                print(data);
+                if (data["account"] != null) {
+                  code = data["account"];
+                }
+                //code = code.substring(0, 5);
+                print(code);
+                print("helllo!!!");
 
 
                 return Container(
@@ -231,6 +243,39 @@ class _AccountbodyState extends State<Accountbody> {
                       SizedBox(height: 10.0),
                       Text(
                         email,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        code,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10.0),
+                      TextField(
+                        onSubmitted: (String newText) {
+                          db.collection("users.Students").doc(newText).get().then((docSnapshot) {
+                            if (docSnapshot.exists){
+                              db.collection("users.Students").doc(newText).collection("classes").get().then((value) {
+                                for (int i = 0; i < value.docs.length; i++){
+                                  print(value.docs[i].id);
+                                  db.collection("users.Parents").doc(Auth.uid).collection("classes").doc(value.docs[i].id);
+                                }
+
+
+                              });
+                              print("student exists");
+
+                            }
+                          });
+
+                        },
                         style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.grey,

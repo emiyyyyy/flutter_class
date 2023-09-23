@@ -141,22 +141,6 @@ class _SignupState extends State<Signup> {
                             },
                           };
                           db.collection("users.Students").doc(AuthenticationHelper().uid).set(newMap);
-                          final Map<String, Object> classMap = {
-                            "TeacherName": "Jack Wagner",
-                            "Zoom Link": "1234",
-                            "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
-
-                          };
-                          db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").doc("english").set(classMap);
-                          final Map<String, Object> classMap2 = {
-                            "TeacherName": "Emily",
-                            "Zoom Link": "4321",
-                            "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
-
-
-                          };
-                          db.collection("users.Students").doc(AuthenticationHelper().uid).collection("classes").doc("math").set(classMap2);
-
 
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) => MyHomePage(character, 'My Home Page')));
@@ -175,13 +159,6 @@ class _SignupState extends State<Signup> {
                             };
 
                             db.collection("users.Teachers").doc(AuthenticationHelper().uid).set(newMap);
-                            final Map<String, Object> classMap = {
-                              "TeacherName": "Jack Wagner",
-                              "Zoom Link": "1234",
-                              "image" : "https://cdn.discordapp.com/attachments/1070956419949535272/1134368270301016064/istockphoto-75940775-612x612.jpg"
-
-                            };
-                            db.collection("users.Teachers").doc(AuthenticationHelper().uid).collection("classes").doc("english").set(classMap);
 
 
                             Navigator.pushReplacement(context,
