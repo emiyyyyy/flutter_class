@@ -15,8 +15,14 @@ class _KatState extends State<Kat> {
   bool isStudent = true;
   bool isTeacher = false;
   bool isParent = false;
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    print(width);
+
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -25,7 +31,7 @@ class _KatState extends State<Kat> {
             bottomRight: Radius.circular(50),
           )
         ),
-        toolbarHeight: 250,
+        toolbarHeight: height/5,
         backgroundColor: Colors.blue[100],
         bottomOpacity: 0,
         elevation: 0,
@@ -34,7 +40,7 @@ class _KatState extends State<Kat> {
           padding: const EdgeInsets.only(top: 0.0,),
           child: Image.asset(
               "assets/logo.PNG",
-              width: 160,
+              width: width/3,
           )
         ),
       ),
@@ -47,7 +53,7 @@ class _KatState extends State<Kat> {
               Text("Sign In, Create a Account, or Browse as a Teacher, Student, Parent, or Guest",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 20,
+                  fontSize: height/43,
                   fontFamily: "Merriweather",
                 ),
               ),

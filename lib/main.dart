@@ -266,9 +266,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Container(
-      width: 300,
-      height: 600,
+      height: height - 10,
+      width: width - 10,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -302,7 +304,7 @@ class _HomeState extends State<Home> {
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: Image.asset(
               'assets/globalmap.JPG',
-              width: 300,
+              width: width/1.5,
             ),
           ),
         ],

@@ -156,12 +156,12 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                         // Build your UI using the fetched data
                         // You can access the data using snapshot.data
                         final data = snapshot.data!;
-                        print(data.docs);
+
                              // Extract the data from the DocumentSnapshot
                         List<TeacherHomework> tmpHW = [];
 
                           for (var x in data.docs) {
-                            print(x.data());
+
                             tmpHW.add(
                                 TeacherHomework(x.data()!["title"],
                                     x.data()!["description"], x.data()!["date"],
@@ -201,12 +201,12 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                         // Build your UI using the fetched data
                         // You can access the data using snapshot.data
                         final data = snapshot.data!;
-                        print(data.docs);
+
                         // Extract the data from the DocumentSnapshot
                         List<ClassMaterial> tmpMats = [];
 
                         for (var x in data.docs) {
-                          print(x.data());
+
                           tmpMats.add(
                               ClassMaterial(x.data()!["title"], x.data()!["description"], x.data()!["file"], classID)
                           );
@@ -245,14 +245,14 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                         // Build your UI using the fetched data
                         // You can access the data using snapshot.data
                         final data = snapshot.data!;
-                        print(data.docs);
+
                         // Extract the data from the DocumentSnapshot
-                        List<Text> tmpStudents = [];
+                        List<Students> tmpStudents = [];
 
                         for (var x in data.docs) {
-                          print(x.data());
+                          print(x.id);
                           tmpStudents.add(
-                              Text(x.id)
+                              Students(x.id)
                           );
                         }
                         students = tmpStudents;

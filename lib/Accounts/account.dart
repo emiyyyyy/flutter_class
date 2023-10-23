@@ -263,10 +263,13 @@ class _AccountbodyState extends State<Accountbody> {
                           db.collection("users.Students").doc(newText).get().then((docSnapshot) {
                             if (docSnapshot.exists){
                               db.collection("users.Students").doc(newText).collection("classes").get().then((value) {
+                                Map<String, dynamic> n = {"Title":"dummy"};
+
                                 for (int i = 0; i < value.docs.length; i++){
-                                  print(value.docs[i].id);
-                                  db.collection("users.Parents").doc(Auth.uid).collection("classes").doc(value.docs[i].id);
+                                  db.collection("users.Parents").doc(Auth.uid).collection("classes").doc(value.docs[i].id).set(n);
+
                                 }
+
 
 
                               });

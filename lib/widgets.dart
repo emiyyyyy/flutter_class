@@ -45,6 +45,11 @@ class Classess extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => Scp(this.classID)));
         }
+        if (character.toString() == "Character.parent") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Scp(this.classID)));
+        }
         else if (character.toString() == "Character.teacher") {
           Navigator.push(
               context,
@@ -138,7 +143,7 @@ class TeacherHomework extends StatelessWidget {
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
-      print(fileName);
+
 
       final storageRef = FirebaseStorage.instance.ref();
 
@@ -280,7 +285,7 @@ class StudentSubmission extends StatelessWidget {
       //refrence it later for the teacher to do feedback
       Map<String, String> studentlink = new Map<String,String>();
       studentlink[Auth.getUID()] = downloadURL;
-      print(studentlink);
+
       db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(this.uid).update({
         "feedback" : downloadURL
       });
@@ -363,7 +368,7 @@ class Homework extends StatelessWidget {
     db.collection("classes").doc(this.classID).collection("HW").doc(title).collection("submissions").doc(Auth.getUID()).get().then((value) {
       if (value?["submitted"] != null && value?["submitted"] == true) {
         submitted = true;
-        print("file submitted");
+
       }
     });
 
@@ -395,9 +400,9 @@ class Homework extends StatelessWidget {
 
   Future<void> _uploadPDF() async {
     if (_selectedPDF != null) {
-      print("hello");
+
       String fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.pdf';
-      print(fileName);
+
 
       final storageRef = FirebaseStorage.instance.ref();
 
@@ -727,8 +732,90 @@ class StudentClassMaterial extends StatelessWidget {
   }
 }
 
+class Students extends StatelessWidget {
+  late final String uid;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  List<dynamic> myJson = [];
+
+  Students(this.uid);
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchStudent() async {
+    // Replace 'collectionName' with your actual collection name
+    print(this.uid);
+    Future<DocumentSnapshot<Map<String, dynamic>>>  snapshot2 = db
+        .collection("users.Students")
+        .doc(this.uid)
+        .get();
+
+    return snapshot2;
+  }
 
 
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+
+      },
+      child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          future: fetchStudent(), // Call your fetchData function here
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child:
+                  CircularProgressIndicator()); // Display a loading indicator while waiting for data
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Text(
+                      'Error fetching data')); // Display an error message if data fetching fails
+            } else if (!snapshot.hasData) {
+              return Center(
+                  child: Text(
+                      'No data available')); // Display a message if no data is available
+            } else {
+              // Build your UI using the fetched data
+              // You can access the data using snapshot.data
+              final data = snapshot.data!.data()?["Students"];
+
+              String email = "";
+              if (data?["email"] != null) {
+                email = data?["email"];
+              }
+
+
+
+              return Container(
+                margin: EdgeInsets.all(10),
+                height: 50,
+                width: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.transparent,),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue[100],
+                ),
+                child: Column(
+                  children: [
+
+                    Container(
+                        margin: EdgeInsets.all(12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(Icons.person),
+                            SizedBox(width: 10,),
+                            Text(email, style: TextStyle(
+                                fontSize: 20
+                            ),),
+
+                          ],)
+                    ),
+                  ],
+                ),
+              );}}),
+
+    );
+  }
+}
 
 class Anouncement extends StatelessWidget {
   late final String title;

@@ -29,7 +29,7 @@ class _ClassbodyState extends State<Classbody> {
       currentAccount = "users.Teachers";
     }
     else if (character.toString() == "Character.parent") {
-      currentAccount = "users.parent";
+      currentAccount = "users.Parents";
 
     }
     else if (character.toString() == "Character.guest"){
