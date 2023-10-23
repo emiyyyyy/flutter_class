@@ -103,129 +103,112 @@ class TeacherProfileState extends State<TeacherProfile> {
             final data = snapshot.data!.data(); // Extract the data from the DocumentSnapshot
             Map<String, dynamic> userData = data?["Teachers"];
             // Example: Display a text widget with a value from Firestore
-          /*  return  Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(data?["Teachers"]["name"]),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      width: 600,
-                      child: Image.network(data?["Teachers"]["image"], width: 300, height: 300,),
-                    ),
-                  ),
-                  ElevatedButton(onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => Settingbody()));
-
-                  }, child: Text("Hire Me"))
-                ],
-              ),*/
+       
           return  Padding(
             padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 16.0),
 
-                Center(
-                  child: CircleAvatar(
-                    radius: 100.0,
-                    backgroundImage: NetworkImage(userData['image']),
+                  Center(
+                    child: CircleAvatar(
+                      radius: 100.0,
+                      backgroundImage: NetworkImage(userData['image']),
+                    ),
                   ),
-                ),
-                SizedBox(height: 40.0),
+                  SizedBox(height: 40.0),
 
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
 
-                    Text(
-                      'Name: ${userData['name']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis', // Assuming you've added the Metropolis font
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'Name: ${userData['name']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis', // Assuming you've added the Metropolis font
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Email: ${userData['email']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Email: ${userData['email']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Age: ${userData['age']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Age: ${userData['age']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'College: ${userData['college']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'College: ${userData['college']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Major: ${userData['major']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Major: ${userData['major']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Experience: ${userData['experience']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Experience: ${userData['experience']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Skills: ${userData['skills']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Skills: ${userData['skills']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16.0),
+                      SizedBox(height: 16.0),
 
-                    Text(
-                      'Current Classes: ${userData['currentClasses']}',
-                      style: TextStyle(
-                        fontFamily: 'Metropolis',
-                        fontSize: 20.0,
+                      Text(
+                        'Current Classes: ${userData['currentClasses']}',
+                        style: TextStyle(
+                          fontFamily: 'Metropolis',
+                          fontSize: 20.0,
+                        ),
+                        maxLines: 3, // Wraps text to a maximum of 3 lines
+                        overflow: TextOverflow.ellipsis, // Shows ellipsis if the text overflows
                       ),
-                      maxLines: 3, // Wraps text to a maximum of 3 lines
-                      overflow: TextOverflow.ellipsis, // Shows ellipsis if the text overflows
-                    ),
-                    SizedBox(height: 40.0),
+                      SizedBox(height: 40.0),
 
-                    ElevatedButton(onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Settingbody()));
+                      ElevatedButton(onPressed: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Settingbody()));
 
-                    }, child: Text("Hire Me"),)
-                  ],
-                ),
-              ],
+                      }, child: Text("Hire Me"),)
+                    ],
+                  ),
+                ],
+              ),
             ),
             );
           }

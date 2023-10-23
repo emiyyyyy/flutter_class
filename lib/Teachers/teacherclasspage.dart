@@ -114,6 +114,8 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     refreshDeliverables();
     return Scaffold(
       appBar: AppBar(
@@ -170,8 +172,8 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                           }
                           homework = tmpHW;
                         return Container(
-                          height: 600,
-                          width: 300,
+                          height: height/1.3,
+                          width: width,
                           child: ListView(
                             children: homework,
                           ),
@@ -213,8 +215,8 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                         }
                         classmaterials = tmpMats;
                         return Container(
-                          height: 600,
-                          width: 300,
+                          height: height/1.3,
+                          width: width,
                           child: ListView(
                             children: classmaterials,
                           ),
@@ -257,8 +259,8 @@ class TcpState extends State<Tcp> with SingleTickerProviderStateMixin{
                         }
                         students = tmpStudents;
                         return Container(
-                          height: 600,
-                          width: 300,
+                          height: height/1.3,
+                          width: width,
                           child: ListView(
                             children: students,
                           ),

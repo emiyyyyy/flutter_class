@@ -62,6 +62,8 @@ class SubmissionState extends State<Submission> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
 
@@ -94,7 +96,7 @@ class SubmissionState extends State<Submission> {
                     Submissions.add(StudentSubmission(x.id, x.data()?[x.id],title, classID));
                   }
                   return Container(
-                    height: 600,
+                    height: height/1.3,
                     width: 300,
                     child: ListView(
                       children: Submissions,

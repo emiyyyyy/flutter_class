@@ -68,13 +68,15 @@ class AnounceState extends State<Anounce> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     refreshClasses();
     return Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: 600,
+              height: height / 1.3,
               width: 300,
               child: ListView(
                 children: announce,

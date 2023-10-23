@@ -103,6 +103,8 @@ class _ClassbodyState extends State<Classbody> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -150,8 +152,8 @@ class _ClassbodyState extends State<Classbody> {
 
                           // Extract the data from the DocumentSnapshot
                           return Container(
-                            height: 600,
-                            width: 300,
+                            height: height / 1.3,
+                            width: width,
                             child: ListView(
                               children: classes,
                             ),
