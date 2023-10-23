@@ -17,14 +17,12 @@
         </dict>
     </array>
     <!-- End of the Google Sign-in Section -->
-    <key>CFBundleDisplayName</key>
-    <string>All For Kids</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Flutter Class</string>
+	<string>All For Kids</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
